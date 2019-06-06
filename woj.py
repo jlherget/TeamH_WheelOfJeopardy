@@ -1,43 +1,52 @@
-import queue
 import board
 import wheel
 import start
 import question
+import queue
 import threading
+import messages
 
-class WoJ:
+
+class WoJ(threading.Thread):
     def __init__(self):
-        self.start_queue = queue.Queue()
-        self.wheel_command_queue = queue.Queue()
-        self.wheel_input_queue = queue.Queue()
-        self.wheel_result_queue = queue.Queue()
-        self.question_result_queue = queue.Queue()
-        self.app_to_board_queue = queue.Queue()
-        self.board_to_question_queue = queue.Queue()
+        threading.Thread.__init__(self)
+        self.queue = queue.Queue()
+        self.running = True
+
+        self.start_screen = start.Start(self)
+        self.board_screen = board.Board(self)
+        self.question_screen = question.Question(self)
+        self.wheel_screen = wheel.Wheel(self)
+
+        self.start_screen.start()
+        self.board_screen.start()
+        self.question_screen.start()
+        self.wheel_screen.start()
 
     def main():
         app = WoJ()
-        w = threading.Thread(target=board.Board, args=(app,))
-        x = threading.Thread(target=wheel.Wheel, args=(app,))
-        y = threading.Thread(target=question.Question, args=(app,))
-        z = threading.Thread(target=start.Start, args=(app,))
-        w.start()
-        x.start()
-        y.start()
-        z.start()
 
-#        while True:
-#            if not app.start_queue.empty():
-#                message = app.start_queue.get()
-#                #TODO: Decide what to do with message!
+        # Send a few of test messages as an example:
+        start_message = messages.StartMessage(1, None)
+        app.start_screen.PostMessage(start_message)
+        app.board_screen.PostMessage(start_message)
+        app.question_screen.PostMessage(start_message)
+        app.wheel_screen.PostMessage(start_message)
 
-#            if not app.wheel_result_queue.empty():
-#                message = app.wheel_result_queue.get()
-#                #TODO: Decide what to do with message!
+        # Send a test message which posts back a message to app
+        # which causes an exit.
+        message = messages.TestMessage()
+        app.wheel_screen.PostMessage(message)
 
-#            if not app.question_result_queue.empty():
-#                message = app.question_result_queue.get()
-#                #TODO: Decide what to do with message!
+        while app.running:
+            task = app.queue.get()
+            if task is None:
+                break
+            task.run(app)
+            app.queue.task_done()
+
+    def PostMessage(self, message):
+        self.queue.put(message)
 
 if __name__ == '__main__':
     WoJ.main()

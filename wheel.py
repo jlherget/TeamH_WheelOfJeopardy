@@ -1,16 +1,27 @@
-import woj
-import time
+import queue
+import messages
+import threading
 
-class Wheel():
+
+class Wheel(threading.Thread):
     def __init__(self, app):
-        print("Wheel Thread")
-#        while True:
-#            if not app.wheel_command_queue.empty():
-#                message = app.wheel_command_queue.get()
-#                #TODO: Decide what to do with message!
-#                #build wheel, reset wheel, delete wheel
+        threading.Thread.__init__(self)
+        self.queue = queue.Queue()
+        self.running = True
+        self.app = app
 
-#            if not app.wheel_input_queue.empty():
-#                message = app.wheel_input_queue.get()
-#                #TODO: Decide what to do with message!
-#                #SPIN THE WHEEL
+    def run(self):
+        while self.running:
+            task = self.queue.get()
+            if task is None:
+                break
+            task.run(self)
+            self.queue.task_done()
+
+    def PostMessage(self, message):
+        self.queue.put(message)
+
+
+#todo
+#build wheel, reset wheel, delete wheel
+#SPIN THE WHEEL
