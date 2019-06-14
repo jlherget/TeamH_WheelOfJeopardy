@@ -96,7 +96,7 @@ class WoJ(threading.Thread):
                 wheel.Draw(screen)
                 board.Draw(screen)
             elif app.questionUp:
-                print("Question Up)
+                print("Question Up")
                    
             pygame.display.flip()
             clock.tick(60)
