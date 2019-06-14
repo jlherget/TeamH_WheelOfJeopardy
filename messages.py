@@ -236,10 +236,6 @@ class KillAppMessage():
         target.board_screen.PostMessage(doom)
         target.question_screen.PostMessage(doom)
         target.wheel_screen.PostMessage(doom)
-        target.start_screen.join()
-        target.board_screen.join()
-        target.question_screen.join()
-        target.wheel_screen.join()
         target.running = False
 
 
@@ -252,4 +248,4 @@ class TestMessage():
     def run(self, target):
         print("Running KillTestMessage against ", target)
         doom = KillAppMessage()
-        target.app.PostMessage(doom)
+        target.PostMessage(doom)
