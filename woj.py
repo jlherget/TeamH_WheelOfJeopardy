@@ -36,7 +36,6 @@ class WoJ(threading.Thread):
         clock = pygame.time.Clock()
 
         # Set positions of graphics
-        background_position = [0, 0]
         wheel = gameboard.WheelUI(10, 60)
         board = gameboard.QuestionsBoardUI(320, 0)
         start_button = gameboard.StartButtonUI(20,70, gameboard.BLUE, 159, 315, "hello")
@@ -84,7 +83,7 @@ class WoJ(threading.Thread):
                         if event.key == pygame.K_SPACE:
                             wheel.Spin()
                 elif app.questionUp:
-                    prrint("Question Up")
+                    print("Question Up")
  
             #Redraw the gray background on the board
             screen.fill(gameboard.GRAY)     
