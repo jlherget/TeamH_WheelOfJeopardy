@@ -39,7 +39,7 @@ class WheelUI():
         self.img_rect       = self.wheel_img.get_rect(topleft=(self.pos_x, self.pos_y))
         
     def CreateWheelSurface(self):
-        wheel_img       = pygame.image.load("wheel.png").convert_alpha()
+        wheel_img       = pygame.image.load("resource/wheel.png").convert_alpha()
         wheel_img  = pygame.transform.scale(wheel_img, self.WHEEL_SIZE)
         return wheel_img
          
@@ -142,7 +142,7 @@ class QuestionsBoardUI():
             for c  in range(self.NUM_COLS):
                 x = self.pos_x + self.COL_WIDTH*c + self.COL_WIDTH / 3
                 y = self.pos_y + self.QY_OFFSET + self.ROW_HEIGHT * r + self.ROW_HEIGHT / 2.5
-                s = '${}'.format(r * self.BASE_VALUE)
+                s = '${}'.format((r+1) * self.BASE_VALUE)
                 text = font.render(s, True, YELLOW)
                 screen.blit(text, [x, y])
 
