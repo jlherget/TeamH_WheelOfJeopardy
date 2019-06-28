@@ -40,7 +40,7 @@ class WheelUI():
         self.img_rect       = self.wheel_img.get_rect(topleft=(self.pos_x, self.pos_y))
         
     def CreateWheelSurface(self):
-        wheel_img       = pygame.image.load("resource/wheel.png").convert_alpha()
+        wheel_img       = pygame.image.load("resources/wheel.png").convert_alpha()
         wheel_img  = pygame.transform.scale(wheel_img, self.WHEEL_SIZE)
         return wheel_img
          
