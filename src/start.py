@@ -37,7 +37,7 @@ class Start(threading.Thread):
             self.main_list[num_cat] = c_list
         else:
             pass
-        textfile = "category_question_answer.txt"
+        textfile = "resources/category_question_answer.txt"
         f = open(textfile, "w")
         for list in self.main_list:
             for item in list:
@@ -62,7 +62,7 @@ class Start(threading.Thread):
 
     def ingestText(self):
         temp_list = []
-        textfile = "category_question_answer.txt"
+        textfile = "resources/category_question_answer.txt"
         f = open(textfile, "r")
         for line in f.readlines():
             if "Category:" in line:

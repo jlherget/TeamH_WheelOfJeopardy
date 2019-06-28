@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Wheel of Jeopardy" company="" webLink="http://" view-date="2019-05-26" view-index="0" gantt-divider-location="512" resource-divider-location="300" version="2.8.10" locale="en_US">
+    <description/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Name" width="343" order="0"/>
+        <field id="tpd4" name="Begin date" width="82" order="1"/>
+        <field id="tpd5" name="End date" width="83" order="2"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="210" order="0"/>
+        <field id="1" name="Default role" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="30" name="Establish Support System" meeting="false" start="2019-05-28" duration="6" complete="100" expand="true">
+            <depend id="0" type="2" difference="0" hardness="Strong"/>
+            <depend id="4" type="2" difference="0" hardness="Strong"/>
+            <task id="31" name="Setup Chat on Google Hangout" color="#8cb6ce" meeting="false" start="2019-05-28" duration="6" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+            <task id="32" name="Setup Weekly Sync Calls" meeting="false" start="2019-05-28" duration="6" complete="100" expand="true">
+                <task id="33" name="Send out Calendar Invites" color="#8cb6ce" meeting="false" start="2019-05-28" duration="6" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+                <task id="34" name="Build Agenda Doc" color="#8cb6ce" meeting="false" start="2019-05-28" duration="6" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="35" name="Setup Version Control System" color="#8cb6ce" meeting="false" start="2019-05-28" duration="6" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="0" name="Build Team Charter" color="#8cb6ce" meeting="false" start="2019-06-05" duration="5" complete="100" thirdDate="2019-06-17" thirdDate-constraint="0" expand="true">
+            <task id="25" name="Identify Goals" color="#8cb6ce" meeting="false" start="2019-06-05" duration="1" complete="100" thirdDate="2019-05-29" thirdDate-constraint="0" expand="true">
+                <depend id="264" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="27" name="Identify Team Member Roles" color="#8cb6ce" meeting="false" start="2019-06-05" duration="1" complete="100" thirdDate="2019-05-28" thirdDate-constraint="0" expand="true">
+                <depend id="264" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="264" name="Develop Team Charter" color="#8cb6ce" meeting="false" start="2019-06-06" duration="3" complete="100" thirdDate="2019-06-05" thirdDate-constraint="0" expand="true">
+                <depend id="266" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="266" name="Reivew and Finalize" color="#8cb6ce" meeting="false" start="2019-06-11" duration="1" complete="100" thirdDate="2019-06-05" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="3" name="Requirement Gathering" meeting="false" start="2019-05-28" duration="6" complete="100" expand="true">
+            <task id="62" name="Review Documents Related to Project" color="#8cb6ce" meeting="false" start="2019-05-28" duration="5" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true">
+                <depend id="63" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="63" name="Hold Requirements Meeting" color="#8cb6ce" meeting="false" start="2019-06-04" duration="1" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="4" name="Prototyping" color="#000000" meeting="false" start="2019-06-05" duration="11" complete="95" thirdDate="2019-06-04" thirdDate-constraint="0" expand="true">
+            <depend id="6" type="1" difference="0" hardness="Strong"/>
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <task id="40" name="Design Initial Class Structure" color="#8cb6ce" meeting="false" start="2019-06-05" duration="11" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+            <task id="37" name="Investigate UI Options" color="#8cb6ce" meeting="false" start="2019-06-05" duration="11" complete="100" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+            <task id="38" name="Design Initial UI Layout" color="#8cb6ce" meeting="false" start="2019-06-05" duration="11" complete="85" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="6" name="Create Project Plan" color="#8cb6ce" meeting="false" start="2019-06-05" duration="15" complete="66" thirdDate="2019-06-17" thirdDate-constraint="0" expand="true">
+            <depend id="8" type="2" difference="0" hardness="Strong"/>
+            <task id="83" name="Assign Plan Parts to Team Members" meeting="false" start="2019-06-05" duration="1" complete="100" expand="true">
+                <depend id="185" type="2" difference="0" hardness="Strong"/>
+                <depend id="186" type="2" difference="0" hardness="Strong"/>
+                <depend id="187" type="2" difference="0" hardness="Strong"/>
+                <depend id="188" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="185" name="Create WBS" color="#8cb6ce" meeting="false" start="2019-06-06" duration="12" complete="50" thirdDate="2019-06-05" thirdDate-constraint="0" expand="true">
+                <depend id="189" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="186" name="Identify Risks" color="#8cb6ce" meeting="false" start="2019-06-06" duration="12" complete="50" thirdDate="2019-06-07" thirdDate-constraint="0" expand="true">
+                <depend id="189" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="187" name="Define Goal for Each Increment" color="#8cb6ce" meeting="false" start="2019-06-06" duration="12" complete="100" thirdDate="2019-06-07" thirdDate-constraint="0" expand="true">
+                <depend id="189" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="188" name="Fill in Descriptions" color="#8cb6ce" meeting="false" start="2019-06-06" duration="12" complete="75" thirdDate="2019-06-07" thirdDate-constraint="0" expand="true">
+                <depend id="189" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="189" name="Review &amp; Finalize" color="#8cb6ce" meeting="false" start="2019-06-24" duration="2" complete="0" thirdDate="2019-06-07" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="8" name="Create Vision Document" color="#8cb6ce" meeting="false" start="2019-06-26" duration="6" complete="0" thirdDate="2019-06-17" thirdDate-constraint="0" expand="true">
+            <depend id="131" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="131" name="Create Requirements Document" color="#8cb6ce" meeting="false" start="2019-07-04" duration="8" complete="0" thirdDate="2019-06-05" thirdDate-constraint="0" expand="true">
+            <depend id="9" type="3" difference="0" hardness="Strong"/>
+        </task>
+        <task id="9" name="Skeletal Increment" color="#000000" meeting="false" start="2019-06-28" duration="14" complete="0" thirdDate="2019-05-22" thirdDate-constraint="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+            <depend id="10" type="2" difference="0" hardness="Strong"/>
+            <task id="90" name="Implement Wheel" meeting="false" start="2019-06-28" duration="7" complete="0" expand="true">
+                <depend id="97" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="91" name="Implement Board" meeting="false" start="2019-06-28" duration="7" complete="0" expand="true">
+                <depend id="98" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="92" name="Implement Start Screen" meeting="false" start="2019-06-28" duration="7" complete="0" expand="true">
+                <depend id="99" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="93" name="Implement Question Screen" meeting="false" start="2019-06-28" duration="7" complete="0" expand="true">
+                <depend id="101" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="94" name="Implement Score/Status Screen" meeting="false" start="2019-06-28" duration="7" complete="0" expand="true"/>
+            <task id="95" name="Implement Q/A Editor" meeting="false" start="2019-06-28" duration="7" complete="0" expand="true">
+                <depend id="102" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="96" name="Implement Skeleton WoJ App" meeting="false" start="2019-06-28" duration="7" complete="0" expand="true">
+                <depend id="97" type="2" difference="0" hardness="Strong"/>
+                <depend id="98" type="2" difference="0" hardness="Strong"/>
+                <depend id="99" type="2" difference="0" hardness="Strong"/>
+                <depend id="101" type="2" difference="0" hardness="Strong"/>
+                <depend id="102" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="97" name="Integrate Wheel with WoJ App" color="#8cb6ce" meeting="false" start="2019-07-09" duration="7" complete="0" thirdDate="2019-06-20" thirdDate-constraint="0" expand="true"/>
+            <task id="98" name="Integrate Board with WoJ App" color="#8cb6ce" meeting="false" start="2019-07-09" duration="7" complete="0" thirdDate="2019-06-20" thirdDate-constraint="0" expand="true"/>
+            <task id="99" name="Integrate Start Screen with WoJ App" color="#8cb6ce" meeting="false" start="2019-07-09" duration="7" complete="0" thirdDate="2019-06-20" thirdDate-constraint="0" expand="true"/>
+            <task id="101" name="Integrate Question Screen with WoJ App" color="#8cb6ce" meeting="false" start="2019-07-09" duration="7" complete="0" thirdDate="2019-06-20" thirdDate-constraint="0" expand="true"/>
+            <task id="102" name="Integrate Q/A Editor with WoJ App" color="#8cb6ce" meeting="false" start="2019-07-09" duration="7" complete="0" thirdDate="2019-06-20" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="7" name="Create Software Design Document" color="#8cb6ce" meeting="false" start="2019-07-18" duration="12" complete="0" thirdDate="2019-06-17" thirdDate-constraint="0" expand="true"/>
+        <task id="10" name="Minimal Increment" color="#8cb6ce" meeting="false" start="2019-07-18" duration="14" complete="0" thirdDate="2019-06-17" thirdDate-constraint="0" expand="true">
+            <depend id="247" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="247" name="Final Increment" color="#8cb6ce" meeting="false" start="2019-08-07" duration="5" complete="0" thirdDate="2019-08-12" thirdDate-constraint="0" expand="true">
+            <depend id="238" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="238" name="Project Demonstration" color="#000000" meeting="false" start="2019-08-14" duration="6" complete="0" thirdDate="2019-06-21" thirdDate-constraint="0" expand="false">
+            <task id="239" name="Record Video" meeting="false" start="2019-08-14" duration="4" complete="0" expand="true">
+                <depend id="240" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="240" name="Edit Video" color="#8cb6ce" meeting="false" start="2019-08-20" duration="1" complete="0" thirdDate="2019-08-12" thirdDate-constraint="0" expand="true">
+                <depend id="252" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="252" name="Review &amp; Finalize" color="#8cb6ce" meeting="false" start="2019-08-21" duration="1" complete="0" thirdDate="2019-08-19" thirdDate-constraint="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
