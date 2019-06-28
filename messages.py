@@ -39,7 +39,6 @@ class SpinInMessage():
     def run(self, target):
         print("Running SpinInMessage")
 
-
 # SpinOut Message:
 # ------------------------------------------
 # out_id: The id for the result of the wheel spin:

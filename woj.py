@@ -13,6 +13,7 @@ class WoJ(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue.Queue()
         self.running = True
+        self.num_players = 1
 
         self.start_screen = start.Start(self)
         self.board_screen = board.Board(self)
@@ -22,6 +23,7 @@ class WoJ(threading.Thread):
         self.startUp = True
         self.boardWheelUp = False
         self.questionUp = False
+        self.updateQuestions = False
 
     def main():
         app = WoJ()
@@ -38,19 +40,12 @@ class WoJ(threading.Thread):
         # Set positions of graphics
         wheel = gameboard.WheelUI(10, 60)
         board = gameboard.QuestionsBoardUI(320, 0)
-        start_button = gameboard.StartButtonUI(20,70, gameboard.BLUE, 159, 315, "hello")
-
-        # Send a few of test messages as an example:
-        start_message = messages.StartMessage(1, None)
-        app.start_screen.PostMessage(start_message)
-        app.board_screen.PostMessage(start_message)
-        app.question_screen.PostMessage(start_message)
-        app.wheel_screen.PostMessage(start_message)
-
-        # Send a test message which posts back a message to app
-        # which causes an exit.
-#        message = messages.TestMessage()
-#        app.wheel_screen.PostMessage(message)
+        start_button = gameboard.StartButtonUI(350,30, gameboard.BLUE, 200, 150, "START")
+        numPlayers1_button = gameboard.StartButtonUI(40,210, gameboard.GREEN, 260, 75, "Number Of Players: 1")
+        numPlayers2_button = gameboard.StartButtonUI(40,300, gameboard.BLUE, 260, 75, "Number Of Players: 2")
+        numPlayers3_button = gameboard.StartButtonUI(40,390, gameboard.BLUE, 260, 75, "Number Of Players: 3")
+        numPlayers4_button = gameboard.StartButtonUI(40,480, gameboard.BLUE, 260, 75, "Number Of Players: 4")
+        update_button = gameboard.StartButtonUI(400,300, gameboard.BLUE, 250, 250, "Update Jeopardy \nQuestions/Answers")
 
         while app.running:
             if not app.queue.empty():
@@ -71,13 +66,39 @@ class WoJ(threading.Thread):
                 if app.startUp:
                     if event.type == pygame.MOUSEMOTION:
                         if start_button.isHighlighted(pygame.mouse.get_pos()):
-                            start_button.color = gameboard.GREEN
+                            start_button.color = gameboard.PURPLE
                         else:
                             start_button.color = gameboard.BLUE
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        app.start_screen.PostMessage(messages.StartMessage(2, None))
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if start_button.isHighlighted(pygame.mouse.get_pos()):
+                        print("Mouse down")
+                        app.start_screen.PostMessage(messages.StartMessage(app.num_players, None))     
                         app.startUp = False
                         app.boardWheelUp = True
+                    if numPlayers1_button.isHighlighted(pygame.mouse.get_pos()):
+                        app.num_players = 1
+                        numPlayers1_button.color = gameboard.GREEN
+                        numPlayers2_button.color = gameboard.BLUE
+                        numPlayers3_button.color = gameboard.BLUE
+                        numPlayers4_button.color = gameboard.BLUE
+                    if numPlayers2_button.isHighlighted(pygame.mouse.get_pos()):
+                        app.num_players = 2
+                        numPlayers1_button.color = gameboard.BLUE
+                        numPlayers2_button.color = gameboard.GREEN
+                        numPlayers3_button.color = gameboard.BLUE
+                        numPlayers4_button.color = gameboard.BLUE
+                    if numPlayers3_button.isHighlighted(pygame.mouse.get_pos()):
+                        app.num_players = 3
+                        numPlayers1_button.color = gameboard.BLUE
+                        numPlayers2_button.color = gameboard.BLUE
+                        numPlayers3_button.color = gameboard.GREEN
+                        numPlayers4_button.color = gameboard.BLUE
+                    if numPlayers4_button.isHighlighted(pygame.mouse.get_pos()):
+                        app.num_players = 4
+                        numPlayers1_button.color = gameboard.BLUE
+                        numPlayers2_button.color = gameboard.BLUE
+                        numPlayers3_button.color = gameboard.BLUE
+                        numPlayers4_button.color = gameboard.GREEN
                 elif app.boardWheelUp:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
@@ -90,7 +111,12 @@ class WoJ(threading.Thread):
      
             #Determine what should be drawn
             if app.startUp:
-                start_button.Draw(screen)
+                start_button.Draw(screen, 60)
+                update_button.Draw(screen, 40)
+                numPlayers1_button.Draw(screen, 35)
+                numPlayers2_button.Draw(screen, 35)
+                numPlayers3_button.Draw(screen, 35)
+                numPlayers4_button.Draw(screen, 35)
             elif app.boardWheelUp:
                 wheel.Draw(screen)
                 board.Draw(screen)
