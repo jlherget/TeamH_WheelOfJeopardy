@@ -1,28 +1,109 @@
-import queue
+import pygame
+import gameboard
 import messages
-import threading
 
+class Button():
+    
+    def __init__(self, pos_x, pos_y, color, width, height, text):
+        self.pos_x  = pos_x
+        self.pos_y  = pos_y
+        self.width  = width
+        self.height = height
+        self.text   = text
+        self.color  = color
 
-class Start(threading.Thread):
+    def Draw(self, screen, font_size, outline=None):
+        if outline:
+            pygame.draw.rect(screen, outline, (self.pos_x-2,self.pos_y-2,self.width+4,self.height+4),0)
+        else:
+            pygame.draw.rect(screen, self.color, (self.pos_x,self.pos_y,self.width,self.height),0)
+        
+        if self.text != '':
+            font = pygame.font.SysFont('arial', font_size)
+            text = font.render(self.text, 1, (0,0,0))
+            screen.blit(text, (self.pos_x + (self.width/2 - text.get_width()/2), self.pos_y + (self.height/2 - text.get_height()/2)))   
+
+    def isHighlighted(self, pos):
+        #Pos is the mouse position or a tuple of (x,y) coordinates
+        if pos[0] > self.pos_x and pos[0] < self.pos_x + self.width:
+            if pos[1] > self.pos_y and pos[1] < self.pos_y + self.height:
+                return True
+        return False 
+
+class StartUI():
+    
     def __init__(self, app):
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue()
         self.running = True
-        self.main_list = []
-        self.firstCall = True
-        self.ingestText()
+        self.app     = app
+        self.start_button       = Button(350,30,  gameboard.BLUE,  200, 150, "START")
+        self.numPlayers1_button = Button(40,210,  gameboard.GREEN, 260,  75, "Number Of Players: 1")
+        self.numPlayers2_button = Button(40,300,  gameboard.BLUE,  260,  75, "Number Of Players: 2")
+        self.numPlayers3_button = Button(40,390,  gameboard.BLUE,  260,  75, "Number Of Players: 3")
+        self.numPlayers4_button = Button(40,480,  gameboard.BLUE,  260,  75, "Number Of Players: 4")
+        self.editButton         = Button(400,300, gameboard.BLUE,  250, 250, "Edit Questions/Answers")
+        
+    def Draw(self, screen):
+        self.start_button.Draw(screen, 60)
+        self.editButton.Draw(screen, 40)
+        self.numPlayers1_button.Draw(screen, 35)
+        self.numPlayers2_button.Draw(screen, 35)
+        self.numPlayers3_button.Draw(screen, 35)
+        self.numPlayers4_button.Draw(screen, 35)
+        
+    def ProcessUiEvent(self, event):
+        if event.type == pygame.MOUSEMOTION:
+            if self.start_button.isHighlighted(pygame.mouse.get_pos()):
+                self.start_button.color = gameboard.PURPLE
+            else:
+                self.start_button.color = gameboard.BLUE
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if self.start_button.isHighlighted(pygame.mouse.get_pos()):
+                print("Mouse down")
+                self.app.PostMessage(messages.StartMessage(self.app.num_players, None))     
+                self.app.startUp      = False
+                self.app.boardWheelUp = True
+            if self.numPlayers1_button.isHighlighted(pygame.mouse.get_pos()):
+                self.app.num_players = 1
+                self.numPlayers1_button.color = gameboard.GREEN
+                self.numPlayers2_button.color = gameboard.BLUE
+                self.numPlayers3_button.color = gameboard.BLUE
+                self.numPlayers4_button.color = gameboard.BLUE
+            if self.numPlayers2_button.isHighlighted(pygame.mouse.get_pos()):
+                self.app.num_players = 2
+                self.numPlayers1_button.color = gameboard.BLUE
+                self.numPlayers2_button.color = gameboard.GREEN
+                self.numPlayers3_button.color = gameboard.BLUE
+                self.numPlayers4_button.color = gameboard.BLUE
+            if self.numPlayers3_button.isHighlighted(pygame.mouse.get_pos()):
+                self.app.num_players = 3
+                self.numPlayers1_button.color = gameboard.BLUE
+                self.numPlayers2_button.color = gameboard.BLUE
+                self.numPlayers3_button.color = gameboard.GREEN
+                self.numPlayers4_button.color = gameboard.BLUE
+            if self.numPlayers4_button.isHighlighted(pygame.mouse.get_pos()):
+                self.app.num_players = 4
+                self.numPlayers1_button.color = gameboard.BLUE
+                self.numPlayers2_button.color = gameboard.BLUE
+                self.numPlayers3_button.color = gameboard.BLUE
+                self.numPlayers4_button.color = gameboard.GREEN
 
-    def run(self):
-        while self.running:
-            task = self.queue.get()
-            if task is None:
-                break
-            task.run(self)
-            self.queue.task_done()
+class Start():
+    
+    def __init__(self, app):
+        self.app            = app
+        self.main_list      = []
+        self.firstCall      = True
+        self.ui             = StartUI(app)
+        self.ingestText()
 
     def PostMessage(self, message):
         self.queue.put(message)
-
+        
+    def ProcessUiEvent(self, event):
+        self.ui.ProcessUiEvent(event)
+        
+    def Draw(self, screen):
+        self.ui.Draw(screen)
 
     # Replace Category:
     # ------------------------------------------
