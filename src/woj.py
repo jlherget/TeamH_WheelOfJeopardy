@@ -24,6 +24,7 @@ class WoJ(threading.Thread):
         self.boardWheelUp = False
         self.questionUp = False
         self.updateQuestions = False
+        self.wheelTurn = True
 
     def main():
         app = WoJ()
@@ -38,7 +39,7 @@ class WoJ(threading.Thread):
         clock = pygame.time.Clock()
 
         # Set positions of graphics
-        wheel = gameboard.WheelUI(10, 60)
+        wheel = gameboard.WheelUI(10, 60, app)
         board = gameboard.QuestionsBoardUI(320, 0)
         start_button = gameboard.StartButtonUI(350,30, gameboard.BLUE, 200, 150, "START")
         numPlayers1_button = gameboard.StartButtonUI(40,210, gameboard.GREEN, 260, 75, "Number Of Players: 1")
@@ -102,7 +103,12 @@ class WoJ(threading.Thread):
                 elif app.boardWheelUp:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
-                            wheel.Spin()
+                            if app.wheelTurn:
+                                app.wheel_screen.PostMessage(messages.SpinInMessage())
+                                wheel.Spin()
+                            else:
+                                print("SPACEBAR CLICKED, SENDING QUESTION RESULTS TO APP")
+                                app.wheel_screen.PostMessage(messages.QuestionsResultMessage(True, 1000, 1, False))
                 elif app.questionUp:
                     print("Question Up")
  
@@ -119,7 +125,7 @@ class WoJ(threading.Thread):
                 numPlayers4_button.Draw(screen, 35)
             elif app.boardWheelUp:
                 wheel.Draw(screen)
-                board.Draw(screen)
+                board.Draw(screen, app.wheelTurn)
             elif app.questionUp:
                 print("Question Up")
                    

@@ -37,7 +37,7 @@ class CreateMessage():
 
 class SpinInMessage():
     def run(self, target):
-        print("Running SpinInMessage")
+        print("Running SpinInMessage from queue")
 
 # SpinOut Message:
 # ------------------------------------------
@@ -57,7 +57,10 @@ class SpinOutMessage():
         self.out_id = out_id
 
     def run(self, target):
-        print("Running SpinInMessage: (out_id=", self.out_id, ")")
+        print("Running SpinOutMessage; sending out to app: (out_id=", self.out_id, ")")
+        print("SENDING APP TO BOARD MESSAGE")
+        target.board_screen.PostMessage(AppToBoardMessage(6, target.num_players, False))
+        target.wheelTurn = False
 
     def getOutId(self):
         return self.out_id
@@ -104,6 +107,8 @@ class AppToBoardMessage():
 
     def run(self, target):
         print("Running AppToBoardMessage: (category=", self.category, ")")
+        target.wheelTurn = False
+        print("CLICK SPACEBAR TO REPRESENT ANSWERING A QUESTION")
 
     def getCategory(self):
         return self.category
@@ -186,7 +191,9 @@ class QuestionsResultMessage():
         self.free_token_used = free_token_used
 
     def run(self, target):
-        print("Running QuestionsResultMessage: (result=", self.result, ")")
+        print("Running QuestionsResultMessage: (result=", self.result, "), (net_amount=", self.net_amount, "), (player #=", self.player_number, "), (free_token=", self.free_token_used, ")")
+        print("QUESTION ANSWERED, PRESS SPACE TO SPIN THE WHEEL") 
+        target.wheelTurn = True
 
     def getResult(self):
         return self.result
