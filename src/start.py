@@ -2,6 +2,7 @@ import pygame
 import gameboard
 import messages
 
+#TODO: This needs to get moved out of this class
 class Button():
     
     def __init__(self, pos_x, pos_y, color, width, height, text):
@@ -40,28 +41,36 @@ class StartUI():
         self.numPlayers2_button = Button(40,300,  gameboard.BLUE,  260,  75, "Number Of Players: 2")
         self.numPlayers3_button = Button(40,390,  gameboard.BLUE,  260,  75, "Number Of Players: 3")
         self.numPlayers4_button = Button(40,480,  gameboard.BLUE,  260,  75, "Number Of Players: 4")
-        self.editButton         = Button(400,300, gameboard.BLUE,  250, 250, "Edit Questions/Answers")
+        self.edit_button        = Button(400,300, gameboard.BLUE,  250, 250, "Edit Questions/Answers")
         
     def Draw(self, screen):
         self.start_button.Draw(screen, 60)
-        self.editButton.Draw(screen, 40)
+        self.edit_button.Draw(screen, 40)
         self.numPlayers1_button.Draw(screen, 35)
         self.numPlayers2_button.Draw(screen, 35)
         self.numPlayers3_button.Draw(screen, 35)
         self.numPlayers4_button.Draw(screen, 35)
         
     def ProcessUiEvent(self, event):
+        
+        #Check to see if the mouse is moving. If so, highlight the button.
+        # If the button is clicked, send a start message to the queue
         if event.type == pygame.MOUSEMOTION:
             if self.start_button.isHighlighted(pygame.mouse.get_pos()):
                 self.start_button.color = gameboard.PURPLE
             else:
                 self.start_button.color = gameboard.BLUE
         elif event.type == pygame.MOUSEBUTTONDOWN:
+            # If start button is pressed, send a StartMessage
             if self.start_button.isHighlighted(pygame.mouse.get_pos()):
-                print("Mouse down")
-                self.app.PostMessage(messages.StartMessage(self.app.num_players, None))     
-                self.app.startUp      = False
-                self.app.boardWheelUp = True
+                self.app.PostMessage(messages.StartMessage(self.app.num_players, None))    
+                
+            # If the edit button is pressed, send a EditMessage
+            if self.edit_button.isHighlighted(pygame.mouse.get_pos()):
+                self.app.PostMessage(messages.EditMessage())     
+        
+            # IF any of the number of players buttons are pressed, 
+            # update the number of players and button colors
             if self.numPlayers1_button.isHighlighted(pygame.mouse.get_pos()):
                 self.app.num_players = 1
                 self.numPlayers1_button.color = gameboard.GREEN

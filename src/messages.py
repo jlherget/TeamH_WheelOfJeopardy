@@ -1,3 +1,5 @@
+import woj
+
 # Start Message:
 # ------------------------------------------
 # numPlayers: Number of players playing the game
@@ -12,6 +14,7 @@ class StartMessage():
 
     def run(self, target):
         print("Running StartMessage: (numPlayers=", self.numPlayers, ")")
+        target.current_screen = woj.WoJ.BOARD_SCREEN
 
     def getNumPlayers(self):
         return self.numPlayers
@@ -236,6 +239,18 @@ class KillAppMessage():
         target.question_screen.PostMessage(doom)
         target.wheel_screen.PostMessage(doom)
         target.running = False
+        
+        
+class EditMessage():
+    def run(self, target):
+        print("Edit")
+        target.current_screen = woj.WoJ.EDIT_SCREEN
+        
+        
+class SaveMessage():
+    def run(self, target):
+        print("Saved")
+        target.current_screen = woj.WoJ.START_SCREEN
 
 
 # Test Message:
