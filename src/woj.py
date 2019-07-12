@@ -78,9 +78,8 @@ class WoJ():
             clock.tick(60)
         
     def main():
-        
         pygame.init()
-        screen = pygame.display.set_mode(gameboard.SCREEN_SIZE)
+        screen = pygame.display.set_mode(gameboard.SCREEN_SIZE) # Must create screen before creating WoJ
         app = WoJ()
         app.run(screen)
         pygame.quit()

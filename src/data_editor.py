@@ -1,13 +1,14 @@
+from gameboard import Button
+
 import messages
 import pygame
 import gameboard
-import start
 
 class DataEditorUI():
     
     def __init__(self, app):
         self.app = app
-        self.save_button = start.Button(350,30,  gameboard.BLUE,  200, 150, "SAVE")
+        self.save_button = Button(350,30,  gameboard.BLUE,  200, 150, "SAVE")
         
     def Draw(self, screen):
         self.save_button.Draw(screen, 60)

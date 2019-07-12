@@ -1,6 +1,3 @@
-import queue
-import messages
-import threading
 import pygame
 import gameboard
 
