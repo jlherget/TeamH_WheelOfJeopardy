@@ -5,6 +5,7 @@ import queue
 import gameboard
 import pygame
 import data_editor
+import messages
 
 class WoJ():
     
@@ -18,17 +19,20 @@ class WoJ():
         self.running            = True
         self.num_players        = 1
         self.current_screen     = self.START_SCREEN
+        self.updateQuestions = False
+        self.wheelTurn = True
         
-        self.start       = start.Start(self)
-        self.board       = board.Board(self)
-        self.wheel       = wheel.Wheel(self)
-        self.editor      = data_editor.DataEditor(self)
+        self.start_screen       = start.Start(self)
+        self.board_screen       = board.Board(self)
+        self.wheel_screen       = wheel.Wheel(self)
+        self.editor_screen      = data_editor.DataEditor(self)
         
     def run(self, screen):
-                
+
         # This sets the name of the window
         pygame.display.set_caption('Wheel of Jeopardy')
         clock = pygame.time.Clock()
+        print("After Start, Press 1 to Restart, Press 2 to Kill")
     
         while self.running:
             
@@ -47,13 +51,25 @@ class WoJ():
                     self.running = False
                     
                 if self.current_screen == self.START_SCREEN:
-                    self.start.ProcessUiEvent(event)
+                    self.start_screen.ProcessUiEvent(event)
                 elif self.current_screen == self.BOARD_SCREEN:
                     if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_1:
+                            self.board_screen.PostMessage(messages.RestartMessage())
+                        if event.key == pygame.K_2:
+                            self.board_screen.PostMessage(messages.KillMessage())
+                        if event.key == pygame.K_TAB and not self.wheelTurn:
+                                self.board_screen.PostMessage(messages.OutOfQuestionsMessage())
+                                self.wheelTurn = True
                         if event.key == pygame.K_SPACE:
-                            self.wheel.Spin()
+                            if self.wheelTurn:
+                                self.wheel_screen.PostMessage(messages.SpinInMessage())
+                                wheel.Spin()
+                            else:
+                                print("SPACEBAR CLICKED, SENDING QUESTION RESULTS TO APP")
+                                self.wheel_screen.PostMessage(messages.QuestionsResultMessage(True, 1000, 1, False))
                 elif self.current_screen == self.EDIT_SCREEN:
-                    self.editor.ProcessUiEvent(event)
+                    self.editor_screen.ProcessUiEvent(event)
                 elif self.current_screen == self.QUESTION_SCREEN:
                     print("Question Up")
 
@@ -62,15 +78,13 @@ class WoJ():
      
             #Determine what should be drawn
             if self.current_screen == self.START_SCREEN:
-                self.start.Draw(screen)
+                self.start_screen.Draw(screen)
             elif self.current_screen == self.BOARD_SCREEN:
-                self.wheel.Draw(screen)
-                self.board.Draw(screen)
+                self.start_screen.Draw(screen)
+                self.start_screen.Draw(screen)
             elif self.current_screen == self.EDIT_SCREEN:
-                self.editor.Draw(screen)
-            elif self.current_screen == self.QUESTION_SCREEN:
-                print("Question Up")
-                   
+                self.start_screen.Draw(screen)
+                
             # Draw the new screen
             pygame.display.flip()
             

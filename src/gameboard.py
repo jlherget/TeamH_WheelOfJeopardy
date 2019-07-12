@@ -18,7 +18,7 @@ SCREEN_SIZE   = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
 #TODO: This needs to get moved out of this class
 class Button():
-    
+
     def __init__(self, pos_x, pos_y, color, width, height, text):
         self.pos_x  = pos_x
         self.pos_y  = pos_y

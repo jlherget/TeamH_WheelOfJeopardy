@@ -4,7 +4,6 @@ import pygame
 import gameboard
 import messages
 
-
 class StartUI():
     
     def __init__(self, app):
@@ -80,13 +79,13 @@ class Start():
         self.ingestText()
 
     def PostMessage(self, message):
-        self.queue.put(message)
-        
+        self.app.queue.put(message)
+
     def ProcessUiEvent(self, event):
         self.ui.ProcessUiEvent(event)
         
-    def Draw(self, screen):
-        self.ui.Draw(screen)
+    def Draw(self, event):
+        self.ui.Draw(event)
 
     # Replace Category:
     # ------------------------------------------
