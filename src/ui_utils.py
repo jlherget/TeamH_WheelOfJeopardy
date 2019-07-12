@@ -1,6 +1,5 @@
 import pygame
 
-# TODO: These need to get moved somewhere else
 # Define constants
 # Define some colors
 BLACK   = pygame.Color("black")
@@ -16,7 +15,7 @@ SCREEN_WIDTH  = 900
 SCREEN_HEIGHT = 600
 SCREEN_SIZE   = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
-#TODO: This needs to get moved out of this class
+# General use button
 class Button():
 
     def __init__(self, pos_x, pos_y, color, width, height, text):

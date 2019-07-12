@@ -1,7 +1,8 @@
 import pygame
-import gameboard
+import ui_utils
+import messages
 
-class QuestionsBoardUI():
+class BoardUI():
     NUM_COLS   = 6
     NUM_QROWS  = 5 # Not including categories row
     ROW_HEIGHT = 70
@@ -18,7 +19,8 @@ class QuestionsBoardUI():
     BASE_VALUE  = 200
     
     
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, app, pos_x, pos_y):
+        self.app    = app
         self.pos_x  = pos_x
         self.pos_y  = pos_y
         
@@ -26,10 +28,13 @@ class QuestionsBoardUI():
         
         # Background for the questions
         boardRect = pygame.Rect([self.pos_x, self.pos_y, self.BOARD_WIDTH, self.BOARD_HEIGHT])
-        pygame.draw.rect(screen, gameboard.BLUE, boardRect)
+        if self.app.wheelTurn:
+            pygame.draw.rect(screen, ui_utils.BLUE, boardRect)
+        else:
+            pygame.draw.rect(screen, ui_utils.GREEN, boardRect) 
         
         #Top line
-        pygame.draw.rect(screen, gameboard.BLACK, [self.pos_x, self.pos_y, self.BOARD_WIDTH, 5])
+        pygame.draw.rect(screen, ui_utils.BLACK, [self.pos_x, self.pos_y, self.BOARD_WIDTH, 5])
         
         # Categories
         for i in range(self.NUM_COLS+1):
@@ -37,10 +42,10 @@ class QuestionsBoardUI():
             top     = self.pos_y
             width   = 5
             height  = self.ROW_HEIGHT
-            pygame.draw.rect(screen, gameboard.BLACK, [left, top, width, height])
+            pygame.draw.rect(screen, ui_utils.BLACK, [left, top, width, height])
             
         # Categories/questions seaparator
-        pygame.draw.rect(screen, gameboard.BLACK, [self.pos_x, self.pos_y + self.ROW_HEIGHT, self.BOARD_WIDTH + 5, self.SEPARATOR_HEIGHT])
+        pygame.draw.rect(screen, ui_utils.BLACK, [self.pos_x, self.pos_y + self.ROW_HEIGHT, self.BOARD_WIDTH + 5, self.SEPARATOR_HEIGHT])
         
         # Draw the lines between rows
         for i in range(self.NUM_QROWS+1):
@@ -48,7 +53,7 @@ class QuestionsBoardUI():
             left    = self.pos_x
             width   = self.BOARD_WIDTH + 5
             height  = 5
-            pygame.draw.rect(screen, gameboard.BLACK, [left, top, width, height])
+            pygame.draw.rect(screen, ui_utils.BLACK, [left, top, width, height])
              
         # Draw the lines between columns
         for i in range(self.NUM_COLS+1):
@@ -56,7 +61,7 @@ class QuestionsBoardUI():
             left    = self.pos_x + self.COL_WIDTH *i
             width   = 5
             height  = self.ROW_HEIGHT * self.NUM_QROWS
-            pygame.draw.rect(screen, gameboard.BLACK, [left, top, width, height])
+            pygame.draw.rect(screen, ui_utils.BLACK, [left, top, width, height])
             
         # Draw the dollar amounts that havent been revelead
         font = pygame.font.SysFont('Calibri', 25, True, False)
@@ -65,17 +70,30 @@ class QuestionsBoardUI():
                 x = self.pos_x + self.COL_WIDTH*c + self.COL_WIDTH / 3
                 y = self.pos_y + self.QY_OFFSET + self.ROW_HEIGHT * r + self.ROW_HEIGHT / 2.5
                 s = '${}'.format((r+1) * self.BASE_VALUE)
-                text = font.render(s, True, gameboard.YELLOW)
+                text = font.render(s, True, ui_utils.YELLOW)
                 screen.blit(text, [x, y])
+                
+    def ProcessUiEvent(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                self.app.PostMessage(messages.RestartMessage())
+            if event.key == pygame.K_2:
+                self.app.PostMessage(messages.KillMessage())
+            if event.key == pygame.K_TAB and not self.app.wheelTurn:
+                self.app.PostMessage(messages.OutOfQuestionsMessage())
+                self.app.wheelTurn = True
 
 class Board():
     def __init__(self, app):
         self.running = True
         self.app     = app
-        self.ui      = QuestionsBoardUI(320, 0)
+        self.ui      = BoardUI(app, 320, 0)
 
     def PostMessage(self, message):
         self.app.queue.put(message)
         
     def Draw(self, screen):
         self.ui.Draw(screen)
+        
+    def ProcessUiEvent(self, event):
+        self.ui.ProcessUiEvent(event)

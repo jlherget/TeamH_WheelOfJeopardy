@@ -1,10 +1,27 @@
-import queue
-import messages
-import gameboard
+import ui_utils
 import pygame
 import random
 import math
+import messages
 
+class Wheel():
+    def __init__(self, app):
+        self.running = True
+        self.app     = app
+        self.ui      = WheelUI(app, 10, 60)
+
+    def PostMessage(self, message):
+        self.app.queue.put(message)
+        
+    def Draw(self, screen):
+        self.ui.Draw(screen)
+        
+    def ProcessUiEvent(self, event):
+        self.ui.ProcessUiEvent(event)
+        
+    def Spin(self):
+        self.ui.Spin()
+        
 class WheelUI():
     TRIANGLE_WIDTH  = 20
     TRIANGLE_HEIGHT = 15
@@ -16,7 +33,8 @@ class WheelUI():
     WHEEL_SPIN_ACC          = 0.02
     WHEEL_SPIN_ANG_VEL_INIT = -5
     
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, app, pos_x, pos_y):
+        self.app            = app
         self.pos_x          = pos_x
         self.pos_y          = pos_y
         self.angle          = 0
@@ -27,7 +45,7 @@ class WheelUI():
         self.img_rect       = self.wheel_img.get_rect(topleft=(self.pos_x, self.pos_y))
         
     def CreateWheelSurface(self):
-        wheel_img       = pygame.image.load("resources/wheel.png").convert_alpha()
+        wheel_img  = pygame.image.load("resources/wheel.png").convert_alpha()
         wheel_img  = pygame.transform.scale(wheel_img, self.WHEEL_SIZE)
         return wheel_img
 
@@ -48,6 +66,10 @@ class WheelUI():
                 # At this point, we would send a message back to the app
                 # with the result.
                 self.angle_vel = 0
+                
+                print("SPIN COMPLETED, SENDING OUTPUT TO MAIN")
+                sector = math.floor(self.angle / (360 / 12))
+                self.app.PostMessage(messages.SpinOutMessage(sector))
             self.angle %= 360
         
         rot_image = pygame.transform.rotate(self.wheel_img, self.angle)
@@ -64,22 +86,17 @@ class WheelUI():
         triangle_p3 = (triangle_p1[0] + self.TRIANGLE_WIDTH, self.pos_y)
         triangle_points = [triangle_p1, triangle_p2, triangle_p3]
         
-        pygame.draw.polygon(screen, gameboard.GREEN, triangle_points)
-
-class Wheel():
-    def __init__(self, app):
-        self.running = True
-        self.app     = app
-        self.ui      = WheelUI(10, 60)
-
-    def PostMessage(self, message):
-        self.app.queue.put(message)
+        pygame.draw.polygon(screen, ui_utils.GREEN, triangle_points)
         
-    def Draw(self, screen):
-        self.ui.Draw(screen)
-    
-    def Spin(self):
-        self.ui.Spin()
+    def ProcessUiEvent(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                if self.app.wheelTurn:
+                    self.app.PostMessage(messages.SpinInMessage())
+                    self.Spin()
+                else:
+                    print("SPACEBAR CLICKED, SENDING QUESTION RESULTS TO APP")
+                    self.app.PostMessage(messages.QuestionsResultMessage(True, 1000, 1, False))
 
 
 #todo
