@@ -212,9 +212,7 @@ class QuestionsResultMessage():
 class RestartMessage():
     def run(self, target):
         print("Running RestartMessage")
-        target.startUp = True
-        target.boardWheelUp = False
-        target.questionUp = False
+        target.current_screen = target.start_screen
 
 # Kill Message:
 # ------------------------------------------
