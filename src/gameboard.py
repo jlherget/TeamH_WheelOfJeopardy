@@ -1,6 +1,8 @@
 import pygame
 import math
 import random
+import messages
+import wheel
 
 # Define constants
 # Define some colors
@@ -29,7 +31,8 @@ class WheelUI():
     WHEEL_SPIN_ACC          = 0.02
     WHEEL_SPIN_ANG_VEL_INIT = -5
     
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, pos_x, pos_y, app):
+        self.app = app
         self.pos_x          = pos_x
         self.pos_y          = pos_y
         self.angle          = 0
@@ -48,6 +51,7 @@ class WheelUI():
     def Spin(self):
         # Start spinning the wheel (if it's not already spinning)
         if self.angle_vel == 0:
+            print("SPIN IN MESSAGE RECEIVED: SPINNING WHEEL")
             self.angle_vel = random.randrange(-10, -6)
         
     def Draw(self, screen):
@@ -62,6 +66,8 @@ class WheelUI():
                 # At this point, we would send a message back to the app
                 # with the result.
                 self.angle_vel = 0
+                print("SPIN COMPLETED, SENDING OUTPUT TO MAIN")
+                self.app.wheel_screen.PostMessage(messages.SpinOutMessage(6))
             self.angle %= 360
         
         rot_image = pygame.transform.rotate(self.wheel_img, self.angle)
@@ -101,12 +107,14 @@ class QuestionsBoardUI():
         self.pos_x  = pos_x
         self.pos_y  = pos_y
         
-    def Draw(self, screen):
+    def Draw(self, screen, wheelTurn):
         
         # Background for the questions
         boardRect = pygame.Rect([self.pos_x, self.pos_y, self.BOARD_WIDTH, self.BOARD_HEIGHT])
-        pygame.draw.rect(screen, BLUE, boardRect)
-        
+        if wheelTurn:
+            pygame.draw.rect(screen, BLUE, boardRect)
+        else:
+            pygame.draw.rect(screen, GREEN, boardRect) 
         #Top line
         pygame.draw.rect(screen, BLACK, [self.pos_x, self.pos_y, self.BOARD_WIDTH, 5])
         

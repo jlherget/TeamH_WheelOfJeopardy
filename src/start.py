@@ -3,14 +3,12 @@ import messages
 import threading
 
 
-class Start(threading.Thread):
+class Start():
     def __init__(self, app):
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue()
-        self.running = True
         self.main_list = []
         self.firstCall = True
         self.ingestText()
+        self.app = app
 
     def run(self):
         while self.running:
@@ -21,7 +19,7 @@ class Start(threading.Thread):
             self.queue.task_done()
 
     def PostMessage(self, message):
-        self.queue.put(message)
+        self.app.queue.put(message)
 
 
     # Replace Category:
