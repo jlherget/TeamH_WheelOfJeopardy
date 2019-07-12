@@ -47,7 +47,7 @@ class WoJ(threading.Thread):
         numPlayers3_button = gameboard.StartButtonUI(40,390, gameboard.BLUE, 260, 75, "Number Of Players: 3")
         numPlayers4_button = gameboard.StartButtonUI(40,480, gameboard.BLUE, 260, 75, "Number Of Players: 4")
         update_button = gameboard.StartButtonUI(400,300, gameboard.BLUE, 250, 250, "Update Jeopardy \nQuestions/Answers")
-
+        print("After Start, Press 1 to Restart, Press 2 to Kill")
         while app.running:
             if not app.queue.empty():
                 task = app.queue.get()
@@ -102,6 +102,13 @@ class WoJ(threading.Thread):
                         numPlayers4_button.color = gameboard.GREEN
                 elif app.boardWheelUp:
                     if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_1:
+                            app.board_screen.PostMessage(messages.RestartMessage())
+                        if event.key == pygame.K_2:
+                            app.board_screen.PostMessage(messages.KillMessage())
+                        if event.key == pygame.K_TAB and not app.wheelTurn:
+                                app.board_screen.PostMessage(messages.OutOfQuestionsMessage())
+                                app.wheelTurn = True
                         if event.key == pygame.K_SPACE:
                             if app.wheelTurn:
                                 app.wheel_screen.PostMessage(messages.SpinInMessage())

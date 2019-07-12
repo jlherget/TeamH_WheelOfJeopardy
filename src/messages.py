@@ -108,7 +108,8 @@ class AppToBoardMessage():
     def run(self, target):
         print("Running AppToBoardMessage: (category=", self.category, ")")
         target.wheelTurn = False
-        print("CLICK SPACEBAR TO REPRESENT ANSWERING A QUESTION")
+        print("SENDING QUESTION INFO TO GUI; CLICK SPACEBAR TO REPRESENT ANSWERING A QUESTION; OR TAB TO BE OUT OF QUESTIONS")
+        target.board_screen.PostMessage(BoardToQuestionMessage("What's your name?", "Justin", 1, True, 1000)) 
 
     def getCategory(self):
         return self.category
@@ -122,19 +123,13 @@ class AppToBoardMessage():
 
 # Out of Questions Message:
 # ------------------------------------------
-# out_id: The category id number that has run out of question. tells wheel not to pick that category anymore
+# Tells when the board is out of questions
 # Message for result of wheel spin
 
 
 class OutOfQuestionsMessage():
-    def __init__(self, out_id):
-        self.out_id = out_id
-
     def run(self, target):
-        print("Running OutOfQuestionsMessage: (out_id=", self.out_id, ")")
-
-    def getOutId(self):
-        return self.out_id
+        print("Running OutOfQuestionsMessage")
 
 
 # Board to Question Message:
@@ -216,7 +211,9 @@ class QuestionsResultMessage():
 class RestartMessage():
     def run(self, target):
         print("Running RestartMessage")
-
+        target.startUp = True
+        target.boardWheelUp = False
+        target.questionUp = False
 
 # Kill Message:
 # ------------------------------------------
