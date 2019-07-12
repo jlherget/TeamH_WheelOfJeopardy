@@ -12,6 +12,8 @@ class StartMessage():
 
     def run(self, target):
         print("Running StartMessage: (numPlayers=", self.numPlayers, ")")
+        target.current_screen = target.game_screen
+        target.num_players    = self.numPlayers
 
     def getNumPlayers(self):
         return self.numPlayers
@@ -53,13 +55,13 @@ class SpinInMessage():
 
 
 class SpinOutMessage():
-    def __init__(self, out_id):
-        self.out_id = out_id
+    def __init__(self, sector):
+        self.sector = sector
 
     def run(self, target):
-        print("Running SpinOutMessage; sending out to app: (out_id=", self.out_id, ")")
+        print("Running SpinOutMessage; sending out to app: (sector=", self.sector, ")")
         print("SENDING APP TO BOARD MESSAGE")
-        target.board_screen.PostMessage(AppToBoardMessage(6, target.num_players, False))
+        target.PostMessage(AppToBoardMessage(self.sector, target.num_players, False))
         target.wheelTurn = False
 
     def getOutId(self):
@@ -78,8 +80,7 @@ class InitialQuestionsMessage():
         self.list_categories = list_categories
 
     def run(self, target):
-        print("Running InitialQuestionsMessage: (numPlayers=", self.numPlayers,
-              ")")
+        print("Running InitialQuestionsMessage: (numPlayers=", self.numPlayers,")")
 
     def getNumPlayers(self):
         return self.numPlayers
@@ -100,16 +101,16 @@ class InitialQuestionsMessage():
 
 
 class AppToBoardMessage():
-    def __init__(self, category, player_number, free_token):
-        self.category = category
+    def __init__(self, sector, player_number, free_token):
+        self.sector        = sector
         self.player_number = player_number
-        self.free_token = free_token
+        self.free_token    = free_token
 
     def run(self, target):
-        print("Running AppToBoardMessage: (category=", self.category, ")")
+        print("Running AppToBoardMessage: (sector=", self.sector, ")")
         target.wheelTurn = False
         print("SENDING QUESTION INFO TO GUI; CLICK SPACEBAR TO REPRESENT ANSWERING A QUESTION; OR TAB TO BE OUT OF QUESTIONS")
-        target.board_screen.PostMessage(BoardToQuestionMessage("What's your name?", "Justin", 1, True, 1000)) 
+        target.PostMessage(BoardToQuestionMessage("What's your name?", "Justin", 1, True, 1000)) 
 
     def getCategory(self):
         return self.category
@@ -211,9 +212,7 @@ class QuestionsResultMessage():
 class RestartMessage():
     def run(self, target):
         print("Running RestartMessage")
-        target.startUp = True
-        target.boardWheelUp = False
-        target.questionUp = False
+        target.current_screen = target.start_screen
 
 # Kill Message:
 # ------------------------------------------
@@ -236,10 +235,21 @@ class KillAppMessage():
         print("Running KillAppMessage against ", target)
         doom = KillMessage()
         target.start_screen.PostMessage(doom)
-        target.board_screen.PostMessage(doom)
-        target.question_screen.PostMessage(doom)
-        target.wheel_screen.PostMessage(doom)
+        target.game_screen.PostMessage(doom)
+        target.editor_screen.PostMessage(doom)
         target.running = False
+        
+        
+class EditMessage():
+    def run(self, target):
+        print("Running EditMessage")
+        target.current_screen = target.editor_screen
+        
+        
+class SaveMessage():
+    def run(self, target):
+        print("Running SaveMessage")
+        target.current_screen = target.start_screen
 
 
 # Test Message:

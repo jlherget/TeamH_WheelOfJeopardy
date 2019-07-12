@@ -1,26 +1,94 @@
-import queue
-import messages
-import threading
+from ui_utils import Button
 
+import pygame
+import ui_utils
+import messages
+
+class StartUI():
+    
+    def __init__(self, app):
+        self.running = True
+        self.app     = app
+        self.start_button       = Button(350,30,  ui_utils.BLUE,  200, 150, "START")
+        self.numPlayers1_button = Button(40,210,  ui_utils.GREEN, 260,  75, "1")
+        self.numPlayers2_button = Button(40,300,  ui_utils.BLUE,  260,  75, "2")
+        self.numPlayers3_button = Button(40,390,  ui_utils.BLUE,  260,  75, "3")
+        self.numPlayers4_button = Button(40,480,  ui_utils.BLUE,  260,  75, "4")
+        self.edit_button        = Button(400,300, ui_utils.BLUE,  420, 100, "Edit Questions/Answers")
+        self.num_players        = 1
+        
+    def Draw(self, screen):
+        font = pygame.font.SysFont('arial', 35)
+        text = font.render("Number of Players", 1, (0,0,0))
+        screen.blit(text, (40 , 150))   
+            
+        self.start_button.Draw(screen, 60)
+        self.edit_button.Draw(screen, 40)
+        self.numPlayers1_button.Draw(screen, 35)
+        self.numPlayers2_button.Draw(screen, 35)
+        self.numPlayers3_button.Draw(screen, 35)
+        self.numPlayers4_button.Draw(screen, 35)
+        
+    def ProcessUiEvent(self, event):
+        
+        #Check to see if the mouse is moving. If so, highlight the button.
+        # If the button is clicked, send a start message to the queue
+        if event.type == pygame.MOUSEMOTION:
+            if self.start_button.isHighlighted(pygame.mouse.get_pos()):
+                self.start_button.color = ui_utils.PURPLE
+            else:
+                self.start_button.color = ui_utils.BLUE
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # If start button is pressed, send a StartMessage
+            if self.start_button.isHighlighted(pygame.mouse.get_pos()):
+                self.app.PostMessage(messages.StartMessage(self.num_players, None))    
+                
+            # If the edit button is pressed, send a EditMessage
+            if self.edit_button.isHighlighted(pygame.mouse.get_pos()):
+                self.app.PostMessage(messages.EditMessage())     
+        
+            # If any of the number of players buttons are pressed, 
+            # update the number of players and button colors
+            if self.numPlayers1_button.isHighlighted(pygame.mouse.get_pos()):
+                self.num_players = 1
+                self.numPlayers1_button.color = ui_utils.GREEN
+                self.numPlayers2_button.color = ui_utils.BLUE
+                self.numPlayers3_button.color = ui_utils.BLUE
+                self.numPlayers4_button.color = ui_utils.BLUE
+            if self.numPlayers2_button.isHighlighted(pygame.mouse.get_pos()):
+                self.num_players = 2
+                self.numPlayers1_button.color = ui_utils.BLUE
+                self.numPlayers2_button.color = ui_utils.GREEN
+                self.numPlayers3_button.color = ui_utils.BLUE
+                self.numPlayers4_button.color = ui_utils.BLUE
+            if self.numPlayers3_button.isHighlighted(pygame.mouse.get_pos()):
+                self.num_players = 3
+                self.numPlayers1_button.color = ui_utils.BLUE
+                self.numPlayers2_button.color = ui_utils.BLUE
+                self.numPlayers3_button.color = ui_utils.GREEN
+                self.numPlayers4_button.color = ui_utils.BLUE
+            if self.numPlayers4_button.isHighlighted(pygame.mouse.get_pos()):
+                self.num_players = 4
+                self.numPlayers1_button.color = ui_utils.BLUE
+                self.numPlayers2_button.color = ui_utils.BLUE
+                self.numPlayers3_button.color = ui_utils.BLUE
+                self.numPlayers4_button.color = ui_utils.GREEN
 
 class Start():
+    
     def __init__(self, app):
-        self.main_list = []
-        self.firstCall = True
-        self.ingestText()
-        self.app = app
-
-    def run(self):
-        while self.running:
-            task = self.queue.get()
-            if task is None:
-                break
-            task.run(self)
-            self.queue.task_done()
-
-    def PostMessage(self, message):
-        self.app.queue.put(message)
-
+        self.app            = app
+        self.main_list      = []
+        self.firstCall      = True
+        self.ingestText() # Need to delay this until the game actually starts
+        self.ui    = StartUI(app)
+    
+    def Draw(self, screen):
+        self.ui.Draw(screen)
+        
+    def ProcessUiEvent(self, event):
+        self.ui.ProcessUiEvent(event)
+        
 
     # Replace Category:
     # ------------------------------------------
