@@ -28,10 +28,7 @@ class BoardUI():
         
         # Background for the questions
         boardRect = pygame.Rect([self.pos_x, self.pos_y, self.BOARD_WIDTH, self.BOARD_HEIGHT])
-        if self.app.wheelTurn:
-            pygame.draw.rect(screen, ui_utils.BLUE, boardRect)
-        else:
-            pygame.draw.rect(screen, ui_utils.GREEN, boardRect) 
+        pygame.draw.rect(screen, ui_utils.BLUE, boardRect)
         
         #Top line
         pygame.draw.rect(screen, ui_utils.BLACK, [self.pos_x, self.pos_y, self.BOARD_WIDTH, 5])

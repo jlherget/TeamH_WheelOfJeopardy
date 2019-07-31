@@ -41,11 +41,11 @@ class StartUI():
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # If start button is pressed, send a StartMessage
             if self.start_button.isHighlighted(pygame.mouse.get_pos()):
-                self.app.PostMessage(messages.StartMessage(self.num_players, None))    
+                self.app.startGame(self.num_players, None)
                 
             # If the edit button is pressed, send a EditMessage
             if self.edit_button.isHighlighted(pygame.mouse.get_pos()):
-                self.app.PostMessage(messages.EditMessage())     
+                self.app.showDataEdtior()    
         
             # If any of the number of players buttons are pressed, 
             # update the number of players and button colors

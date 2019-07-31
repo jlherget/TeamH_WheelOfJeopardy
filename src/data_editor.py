@@ -33,4 +33,4 @@ class DataEditorUI():
                 self.save_button.color = ui_utils.BLUE
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if self.save_button.isHighlighted(pygame.mouse.get_pos()):
-                self.app.PostMessage(messages.SaveMessage())
+                self.app.showStartScreen()

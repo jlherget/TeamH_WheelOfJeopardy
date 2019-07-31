@@ -5,6 +5,7 @@ import math
 import messages
 
 class Wheel():
+
     def __init__(self, app):
         self.running = True
         self.app     = app
@@ -69,7 +70,7 @@ class WheelUI():
                 
                 print("SPIN COMPLETED, SENDING OUTPUT TO MAIN")
                 sector = math.floor(self.angle / (360 / 12))
-                self.app.PostMessage(messages.SpinOutMessage(sector))
+                self.app.wheelResult(sector)
             self.angle %= 360
         
         rot_image = pygame.transform.rotate(self.wheel_img, self.angle)
@@ -91,12 +92,7 @@ class WheelUI():
     def ProcessUiEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                if self.app.wheelTurn:
-                    self.app.PostMessage(messages.SpinInMessage())
-                    self.Spin()
-                else:
-                    print("SPACEBAR CLICKED, SENDING QUESTION RESULTS TO APP")
-                    self.app.PostMessage(messages.QuestionsResultMessage(True, 1000, 1, False))
+                self.Spin()
 
 
 #todo
