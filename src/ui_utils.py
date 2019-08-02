@@ -12,7 +12,7 @@ YELLOW  = pygame.Color("yellow")
 PURPLE  = pygame.Color("purple")
 
 SCREEN_WIDTH  = 900
-SCREEN_HEIGHT = 600
+SCREEN_HEIGHT = 700
 SCREEN_SIZE   = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # General use button
