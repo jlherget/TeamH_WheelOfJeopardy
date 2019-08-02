@@ -200,7 +200,7 @@ class BoardUI():
 
                 if self.incorrect_button.isHighlighted(pygame.mouse.get_pos()):
                     if self.app.curPlayerTokenCount() <= 0:
-                        self.app.questionResult(messages.QuestionsResultMessage(True,self.parent.qa.value, False,  self.parent.questionsRemaining()))
+                        self.app.questionResult(messages.QuestionsResultMessage(False,self.parent.qa.value, False,  self.parent.questionsRemaining()))
                         self.question_phase = 0
                     else:
                         self.question_phase = 3
