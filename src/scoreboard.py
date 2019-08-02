@@ -102,3 +102,8 @@ class ScoreboardUI():
         screen.blit(text, [x,y+50])
         text = font.render('%i' % (self.app.cur_round), True, ui_utils.WHITE)
         screen.blit(text, [x+50,y+65])
+
+        text = font.render('Spins Remainig', True, ui_utils.WHITE)
+        screen.blit(text, [x,y+100])
+        text = font.render('%i' % (self.app.spinsRemaining), True, ui_utils.WHITE)
+        screen.blit(text, [x+50,y+115])

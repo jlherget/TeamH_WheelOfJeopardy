@@ -168,11 +168,6 @@ class BoardUI():
             if event.key == pygame.K_2:
                 self.app.PostMessage(messages.KillMessage())
 
-            # DEBUG
-            if event.key == pygame.K_TAB and not self.app.wheelTurn:
-                self.app.PostMessage(messages.OutOfQuestionsMessage())
-                self.app.wheelTurn = True
-
         if self.question_phase == 1:
             if event.type == pygame.MOUSEMOTION:
                 if self.show_answer_button.isHighlighted(pygame.mouse.get_pos()):

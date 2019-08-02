@@ -168,7 +168,7 @@ class WoJ():
         else:
             self.players[self.cur_player_index].addPoints(-result.getNetAmount())
             if result.getFreeTokenUsed():
-                self.players[self.cur_player_index].useToken()
+                self.players[self.cur_player_index].useSpinToken()
             else:
                 self.nextPlayer()
         self.startNextTurn()
