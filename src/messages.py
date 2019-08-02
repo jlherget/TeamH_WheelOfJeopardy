@@ -134,8 +134,8 @@ class AppToBoardMessage():
 
 class OutOfQuestionsMessage():
     def run(self, target):
-        #TODO: APP LOGIC TO GIVE BOARD SECOND ROUND OF QUESTIONS. If reached 50
-        #Questions, use the boardReset() function
+        #TODO: APP LOGIC TO GIVE BOARD SECOND ROUND OF QUESTIONS. Just give more
+        #questions using Board Reset
         print("Running OutOfQuestionsMessage")
 
 
