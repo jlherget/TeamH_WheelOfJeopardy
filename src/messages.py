@@ -12,8 +12,11 @@ class StartMessage():
 
     def run(self, target):
         print("Running StartMessage: (numPlayers=", self.numPlayers, ")")
-        target.current_screen = target.game_screen
         target.num_players    = self.numPlayers
+        #TODO: Example of the initial quesitons message APP should send to board
+        #self.list_categories needs to be the list of 6 lists of categories,
+        #questions, and answeres for that rounds
+        target.PostMessage(InitialQuestionsMessage(self.list_categories))
 
     def getNumPlayers(self):
         return self.numPlayers
@@ -39,6 +42,7 @@ class CreateMessage():
 
 class SpinInMessage():
     def run(self, target):
+        target.game_screen.wheel.ui.Spin()
         print("Running SpinInMessage from queue")
 
 # SpinOut Message:
@@ -61,7 +65,9 @@ class SpinOutMessage():
     def run(self, target):
         print("Running SpinOutMessage; sending out to app: (sector=", self.sector, ")")
         print("SENDING APP TO BOARD MESSAGE")
-        target.PostMessage(AppToBoardMessage(self.sector, target.num_players, False))
+        #TODO: Example of AppToBoard Message, App should send this to the board if there
+        #is a question being played as a result of that spin (out_id 0-7)
+        target.PostMessage(AppToBoardMessage(self.sector, target.num_players, True))
         target.wheelTurn = False
 
     def getOutId(self):
@@ -76,14 +82,12 @@ class SpinOutMessage():
 
 class InitialQuestionsMessage():
     def __init__(self, list_categories):
-        self.numPlayers = numPlayers
         self.list_categories = list_categories
 
     def run(self, target):
-        print("Running InitialQuestionsMessage: (numPlayers=", self.numPlayers,")")
-
-    def getNumPlayers(self):
-        return self.numPlayers
+        target.game_screen.board.data_list = self.list_categories
+        target.current_screen = target.game_screen
+        print("Running InitialQuestionsMessage")
 
     def getListCategories(self):
         return self.list_categories
@@ -109,8 +113,8 @@ class AppToBoardMessage():
     def run(self, target):
         print("Running AppToBoardMessage: (sector=", self.sector, ")")
         target.wheelTurn = False
-        print("SENDING QUESTION INFO TO GUI; CLICK SPACEBAR TO REPRESENT ANSWERING A QUESTION; OR TAB TO BE OUT OF QUESTIONS")
-        target.PostMessage(BoardToQuestionMessage("What's your name?", "Justin", 1, True, 1000)) 
+        if self.sector < 8:
+            target.game_screen.board.sendQuestion(self.sector, self.player_number, self.free_token)
 
     def getCategory(self):
         return self.category
@@ -130,6 +134,8 @@ class AppToBoardMessage():
 
 class OutOfQuestionsMessage():
     def run(self, target):
+        #TODO: APP LOGIC TO GIVE BOARD SECOND ROUND OF QUESTIONS. Just give more
+        #questions using Board Reset
         print("Running OutOfQuestionsMessage")
 
 
@@ -152,7 +158,10 @@ class BoardToQuestionMessage():
         self.value = value
 
     def run(self, target):
+        target.game_screen.board.board_state = False
         print("Running BoardToQuestionMessage: (q_text=", self.q_text, ")")
+        target.game_screen.board.ui.displayQuestion(self.q_text, self.q_answer,
+               self.player_number, self.free_token, self.value)
 
     def getQText(self):
         return self.q_text
@@ -188,7 +197,7 @@ class QuestionsResultMessage():
 
     def run(self, target):
         print("Running QuestionsResultMessage: (result=", self.result, "), (net_amount=", self.net_amount, "), (player #=", self.player_number, "), (free_token=", self.free_token_used, ")")
-        print("QUESTION ANSWERED, PRESS SPACE TO SPIN THE WHEEL") 
+        print("QUESTION ANSWERED, PRESS SPACE TO SPIN THE WHEEL")
         target.wheelTurn = True
 
     def getResult(self):
@@ -238,14 +247,14 @@ class KillAppMessage():
         target.game_screen.PostMessage(doom)
         target.editor_screen.PostMessage(doom)
         target.running = False
-        
-        
+
+
 class EditMessage():
     def run(self, target):
         print("Running EditMessage")
         target.current_screen = target.editor_screen
-        
-        
+
+
 class SaveMessage():
     def run(self, target):
         print("Running SaveMessage")
