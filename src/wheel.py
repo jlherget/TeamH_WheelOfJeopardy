@@ -68,7 +68,7 @@ class WheelUI():
                 self.angle_vel = 0
 
                 print("SPIN COMPLETED, SENDING OUTPUT TO MAIN")
-                sector = math.floor(self.angle / (360 / 2)) + 6
+                sector = math.floor(self.angle / (360 / 12))
                 self.app.PostMessage(messages.SpinOutMessage(sector))
             self.angle %= 360
 
