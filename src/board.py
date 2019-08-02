@@ -217,9 +217,9 @@ class BoardUI():
             elif event.type == pygame.MOUSEBUTTONDOWN:
 
                 if self.freespin_yes.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.questionResult(messages.QuestionsResultMessage(True,self.parent.qa.value, True,  self.parent.questionsRemaining()))                   
+                    self.app.questionResult(messages.QuestionsResultMessage(False, self.parent.qa.value, True,  self.parent.questionsRemaining()))                   
                 if self.freespin_no.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.questionResult(messages.QuestionsResultMessage(True,self.parent.qa.value, False,  self.parent.questionsRemaining()))
+                    self.app.questionResult(messages.QuestionsResultMessage(False ,self.parent.qa.value, False,  self.parent.questionsRemaining()))
                 self.question_phase = 0
                     
         elif self.question_phase == 4 or self.question_phase == 5:

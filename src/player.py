@@ -1,12 +1,13 @@
 
 class Player(object):
 
-    def __init__(self, playerScore, playerTokenCount, playerRoundScore, playerFinalScore):
+    def __init__(self):
 
-        self.playerScore = playerScore
-        self.playerTokenCount = playerTokenCount
-        self.playerRoundScore = playerRoundScore
-        self.playerFinalScore = playerFinalScore
+        self.playerScore       = 0
+        self.playerTokenCount  = 0
+        self.playerRound1Score = 0
+        self.playerRound2Score = 0
+        self.playerFinalScore  = 0
 
     def doubleScore(self):
         self.playerScore *= 2

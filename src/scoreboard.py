@@ -71,22 +71,34 @@ class ScoreboardUI():
             text = font.render(player_text, True, ui_utils.WHITE)
             screen.blit(text, [x, y])
 
-            round1_text = '$%i' % 100 #self.app.players[i].round1Score
+            round1_text = '$%i' % self.app.players[i].playerRound1Score
             text = font.render(round1_text, True, ui_utils.WHITE)
             x += col_width
             screen.blit(text, [x, y])
 
-            round2_text = '$%i' % 200# self.app.players[i].round2Score
+            round2_text = '$%i' % self.app.players[i].playerRound2Score
             text = font.render(round2_text, True, ui_utils.WHITE)
             x += col_width
             screen.blit(text, [x, y])
 
-            total_text = '$%i' % 300 #self.app.players[i].finalScore
+            total_text = '$%i' % (self.app.players[i].playerRound1Score + self.app.players[i].playerRound2Score)
             text = font.render(total_text, True, ui_utils.WHITE)
             x += col_width
             screen.blit(text, [x, y])
 
-            tokens_text = '%i' % 3 #self.app.players[i].spinTokens
+            tokens_text = '%i' % self.app.players[i].playerTokenCount
             text = font.render(tokens_text, True, ui_utils.WHITE)
             x += col_width
             screen.blit(text, [x, y])
+
+        y = row1_start
+        x += col_width
+        text = font.render('Current Player', True, ui_utils.WHITE)
+        screen.blit(text, [x,y])
+        text = font.render('%i' % (self.app.cur_player_index+1), True, ui_utils.WHITE)
+        screen.blit(text, [x+50,y+15])
+
+        text = font.render('Current Round', True, ui_utils.WHITE)
+        screen.blit(text, [x,y+50])
+        text = font.render('%i' % (self.app.cur_round), True, ui_utils.WHITE)
+        screen.blit(text, [x+50,y+65])
