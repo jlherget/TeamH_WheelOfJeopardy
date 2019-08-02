@@ -79,16 +79,17 @@ class WoJ():
     def showStartScreen(self):
         self.current_screen = self.start_screen
 
-    def startGame(self, num_players, cat_quest):
+    def startGame(self, num_players, game_qset):
         """Start the game with the given question/answer set and the number of players"""
         self.current_screen = self.game_screen
         self.num_players    = num_players
+        self.game_qset      = game_qset
         self.spinsRemaining = 50
         self.startRound(1)
     
     def startRound(self, round_num):
         self.cur_round = round_num
-        #self.game_screen.startRound(round_num)
+        self.game_screen.startRound(round_num, self.game_qset.getRound(round_num))
 
     def curPlayerTokenCount(self):
         """Reurn the number of tokens the current player has"""
