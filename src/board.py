@@ -108,15 +108,15 @@ class BoardUI():
                     y = self.pos_y + self.QY_OFFSET + self.ROW_HEIGHT * r + self.ROW_HEIGHT / 2.5
                     s = '${}'.format((r+1) * self.BASE_VALUE)
                     text = font.render(s, True, ui_utils.YELLOW)
-                    if r > 4-self.app.game_screen.board.q_count[c]:
+                    if r > 4-self.parent.qset.category[c].q_count:
                         screen.blit(text, [x, y])
 
         elif self.question_phase == 1:
             font = pygame.font.SysFont('Calibri', 34, True, False)
-            s = '{}'.format("Question:  " + self.app.game_screen.board.qa.question)
+            s = '{}'.format("Question:  " + self.parent.qa.question)
             text = font.render(s, True, ui_utils.YELLOW)
             screen.blit(text, [self.pos_x+15, self.pos_y+40])
-            s = '{}'.format("Value:  $" + str(self.app.game_screen.board.qa.value))
+            s = '{}'.format("Value:  $" + str(self.parent.qa.value))
             text = font.render(s, True, ui_utils.YELLOW)
             screen.blit(text, [self.pos_x+15, self.pos_y+80])
             self.show_answer_button.Draw(screen, 60)
@@ -125,7 +125,7 @@ class BoardUI():
             self.incorrect_button.Draw(screen, 30)
             self.correct_button.Draw(screen, 30)
             font = pygame.font.SysFont('Calibri', 34, True, False)
-            s = '{}'.format("Answer:  " + self.app.game_screen.board.qa.answer)
+            s = '{}'.format("Answer:  " + self.parent.qa.answer)
             text = font.render(s, True, ui_utils.YELLOW)
             screen.blit(text, [self.pos_x+15, self.pos_y+20])
 
@@ -141,7 +141,7 @@ class BoardUI():
             if self.question_phase == 4:
                 text = font.render("Player Choose A Category!", True, ui_utils.YELLOW)
             else:
-                text = font.render("Player Choose A Category!", True, ui_utils.YELLOW)
+                text = font.render("Opponent Choose A Category!", True, ui_utils.YELLOW)
             screen.blit(text, [self.pos_x+15, self.pos_y+20])
             self.cat1_button = Button(self.pos_x+60,self.pos_y+70,  ui_utils.YELLOW, 170, 100,
                                       self.parent.qset.category[0].title)
@@ -168,6 +168,8 @@ class BoardUI():
                 self.app.PostMessage(messages.RestartMessage())
             if event.key == pygame.K_2:
                 self.app.PostMessage(messages.KillMessage())
+
+            # DEBUG
             if event.key == pygame.K_TAB and not self.app.wheelTurn:
                 self.app.PostMessage(messages.OutOfQuestionsMessage())
                 self.app.wheelTurn = True
@@ -194,15 +196,12 @@ class BoardUI():
                     self.incorrect_button.color = ui_utils.YELLOW
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.correct_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.PostMessage(messages.QuestionsResultMessage(True,
-                        self.app.game_screen.board.qa.value,
-                        self.app.game_screen.board.qa.player_num, False))
+                    self.app.questionResult(messages.QuestionsResultMessage(True, self.parent.qa.value, False, self.parent.questionsRemaining()))
                     self.question_phase = 0
+
                 if self.incorrect_button.isHighlighted(pygame.mouse.get_pos()):
-                    if not self.app.game_screen.board.qa.free_token:
-                        self.app.game_screen.board.PostMessage(messages.QuestionsResultMessage(True,
-                            (self.app.game_screen.board.qa.value)*-1,
-                            self.app.game_screen.board.qa.player_num, False))
+                    if self.app.curPlayerTokenCount() <= 0:
+                        self.app.questionResult(messages.QuestionsResultMessage(True,self.parent.qa.value, False,  self.parent.questionsRemaining()))
                         self.question_phase = 0
                     else:
                         self.question_phase = 3
@@ -217,55 +216,37 @@ class BoardUI():
                 else:
                     self.freespin_no.color = ui_utils.YELLOW
             elif event.type == pygame.MOUSEBUTTONDOWN:
+
                 if self.freespin_yes.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.PostMessage(messages.QuestionsResultMessage(True,
-                        (self.app.game_screen.board.qa.value)*-1,
-                        self.app.game_screen.board.qa.player_num, True))
-                    self.question_phase = 0
+                    self.app.questionResult(messages.QuestionsResultMessage(True,self.parent.qa.value, True,  self.parent.questionsRemaining()))                   
                 if self.freespin_no.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.PostMessage(messages.QuestionsResultMessage(True,
-                        (self.app.game_screen.board.qa.value)*-1,
-                        self.app.game_screen.board.qa.player_num, False))
-                    self.question_phase = 0
+                    self.app.questionResult(messages.QuestionsResultMessage(True,self.parent.qa.value, False,  self.parent.questionsRemaining()))
+                self.question_phase = 0
+                    
         elif self.question_phase == 4 or self.question_phase == 5:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.cat1_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.sendQuestion(0,
-                        self.app.game_screen.board.qa.player_num,
-                        self.app.game_screen.board.qa.free_token)
+                    self.parent.sendQuestion(0)
                 if self.cat2_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.sendQuestion(1,
-                        self.app.game_screen.board.qa.player_num,
-                        self.app.game_screen.board.qa.free_token)
+                    self.parent.sendQuestion(1)
                 if self.cat3_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.sendQuestion(2,
-                        self.app.game_screen.board.qa.player_num,
-                        self.app.game_screen.board.qa.free_token)
+                    self.parent.sendQuestion(2)
                 if self.cat4_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.sendQuestion(3,
-                        self.app.game_screen.board.qa.player_num,
-                        self.app.game_screen.board.qa.free_token)
+                    self.parent.sendQuestion(3)
                 if self.cat5_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.sendQuestion(4,
-                        self.app.game_screen.board.qa.player_num,
-                        self.app.game_screen.board.qa.free_token)
+                    self.parent.sendQuestion(4)
                 if self.cat6_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.game_screen.board.sendQuestion(5,
-                        self.app.game_screen.board.qa.player_num,
-                        self.app.game_screen.board.qa.free_token)
+                    self.parent.sendQuestion(5)
 
 
-    def displayQuestion(self, q_text, q_answer, player_number, free_token, value):
-        self.app.game_screen.board.qa = QASet(self.app, q_text, q_answer, player_number, free_token, value)
-        self.app.game_screen.board.ui.question_phase = 1
+    def displayQuestion(self, q_text, q_answer, value):
+        self.parent.qa = QASet(q_text, q_answer, value)
+        self.parent.ui.question_phase = 1
 
 class QASet():
-    def __init__(self, app, question, answer, player_num, free_token, value):
-        self.app = app
+    def __init__(self, question, answer, value):
         self.question = question
         self.answer = answer
-        self.player_num = player_num
-        self.free_token = free_token
         self.value = value
 
 class Board():
@@ -273,27 +254,28 @@ class Board():
         self.running = True
         self.app     = app
         self.data_list = []
-        self.qa      = QASet(self.app, "", "", -1, False, -1)
+        self.qa      = QASet("", "", -1)
         self.ui      = BoardUI(self, app, 320, 0)
 
         self.q_count = [5, 5, 5, 5, 5, 5]
         self.qset = RoundSet()
+        self.roundNum = 0
 
-    def startRound(self, round, round_qset):
+    def startRound(self, roundNum, round_qset):
         self.qset = round_qset
+        self.roundNum = roundNum
 
     def boardReset(self, data_list):
         self.data_list = data_list
         self.q_count = [5, 5, 5, 5, 5, 5]
 
-    def checkOutOfQuestions(self):
-        q_left = False
-        for q in self.q_count:
-            if q > 0:
-                q_left = True
-        return q_left
+    def questionsRemaining(self):
+        total_q_count = 0
+        for cat in self.qset.category:
+            total_q_count += cat.q_count
+        return total_q_count
 
-    def sendQuestion(self, section, player_num, free_token):
+    def sendQuestion(self, section):
         #Not a choice question
         if section < 6:
             category = self.qset.category[section]
@@ -304,33 +286,21 @@ class Board():
                 q_pos    = 5-category.q_count
                 question = category.question[q_pos]
                 answer   = category.answer[q_pos]
-                value = (q_pos+1)*200
+                value = (q_pos+1)*200*self.roundNum
                 self.qset.category[section].q_count -= 1
-                self.PostMessage(messages.BoardToQuestionMessage(question, answer, player_num, free_token, value))
+                self.ui.displayQuestion(question, answer, value)
             else:
+                # Shouldn't happen
                 print("Out of questions, spinning again!")
-                self.app.game_screen.board.ui.question_phase = 0
-                self.PostMessage(messages.SpinInMessage())
+                self.app.noQuestionsInCategory()
         else:
-            if section == 6:
-                self.choiceBoard(player_num, free_token, True)
-            else:
-                self.choiceBoard(player_num, free_token, False)
-        if not self.checkOutOfQuestions():
-            self.PostMessage(messages.OutOfQuestionsMessage())
-            self.q_count = [5, 5, 5, 5, 5, 5]
+            print("Bad category %i" % section)
 
-    def choiceBoard(self, player_num, free_token, choice):
-        self.app.game_screen.board.qa.player_num = player_num
-        self.app.game_screen.board.qa.free_token = free_token
-        if choice:
-            self.app.game_screen.board.ui.question_phase = 4
-        else:
-            self.app.game_screen.board.ui.question_phase = 5
+    def opponentSelectsCategory(self):
+        self.ui.question_phase = 5
 
-
-    def PostMessage(self, message):
-        self.app.queue.put(message)
+    def playerSelectsCategory(self):
+        self.ui.question_phase = 4
 
     def Draw(self, screen):
         self.ui.Draw(screen)

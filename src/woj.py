@@ -83,6 +83,8 @@ class WoJ():
         """Start the game with the given question/answer set and the number of players"""
         self.current_screen = self.game_screen
         self.num_players    = num_players
+        #self.players        = [Player() for i in range(num_players)]
+        self.cur_player_index = 0
         self.game_qset      = game_qset
         self.spinsRemaining = 50
         self.startRound(1)
@@ -94,17 +96,18 @@ class WoJ():
     def curPlayerTokenCount(self):
         """Reurn the number of tokens the current player has"""
         #return cur_player.spinTokens;
-        return 0;
+        return 1;
     
     def wheelResult(self, section):
         self.spinsRemaining -= 1
 
         if section >= CAT_1 and section <= CAT_6:
             print("Category %i section" % section)
-            #self.game_screen.selectCategory(section)
+            self.game_screen.board.sendQuestion(section-1)
         elif section == FREE_SPIN:
             print("Free spin section")
             #self.cur_player.grantSpinToken()
+            #self.nextTurn()
         elif section == LOSE_TURN:
             print("Lose turn section")
             if self.curPlayerTokenCount() > 0:
@@ -112,19 +115,23 @@ class WoJ():
                 pass
         elif section == CHOOSE_CAT:
             print("Choose cat section")
-            #self.game_screen.playerSelectsCategory()
+            self.game_screen.board.playerSelectsCategory()
         elif section == OPPONENT_CHOOSE_CAT:
             print("Opponent choose cat section")
-            #self.game_screen.opponentSelectsCategory()
+            self.game_screen.board.opponentSelectsCategory()
         elif section == DOUBLE_SCORE:
             print("Double score section")
             #self.cur_player.scoreDouble()
+            #self.nextTurn()
         elif section == BANKRUPT:
             print("Bankrupt section")
             #self.cur_player.bankrupt()
+            #self.nextTurn()
         else:
             print("Error! Invalid section %i" % section)
             pass
+
+        
 
     def selectedCategory(self, cat):
         """The user's category choice has been selected"""
@@ -132,17 +139,19 @@ class WoJ():
         pass
 
     def questionResult(self, result):
-        if result.answeredCorrectly:
-            #self.cur_player.addScore(result.value)
+        if result.getResult():
+            #self.cur_player.addScore(result.getNetAmount())
             pass
         else:
-            self.cur_player.addScore(-result.value)
-            if result.usedToken:
+            #self.cur_player.addScore(-result.getNetAmount())
+            if result.getFreeTokenUsed():
                 #self.cur_player.useToken()
                 pass
             else:
                 self.cur_player_index = self.cur_player_index % self.num_players
                 self.cur_player = self.players[self.cur_player_index]
+        if result.getQuestionsLeft() <= 0:
+            self.roundEnd()
 
     def roundEnd(self):
         """Process the end of a round"""
@@ -153,6 +162,9 @@ class WoJ():
             self.startRound(2)
         else:
             self.gameEnd()
+
+    def noQuestionsInCategory(self):
+        self.game_screen.wheel.enableSpin()
 
     def gameEnd(self):
         print("Game over")

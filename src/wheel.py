@@ -10,6 +10,13 @@ class Wheel():
         self.running = True
         self.app     = app
         self.ui      = WheelUI(app, 10, 60)
+        self.spinnable = False
+
+    def enableSpin(self):
+        self.spinnable = True
+    
+    def disableSpin(self):
+        self.spinnable = False
 
     def PostMessage(self, message):
         self.app.queue.put(message)
@@ -21,7 +28,8 @@ class Wheel():
         self.ui.ProcessUiEvent(event)
 
     def Spin(self):
-        self.ui.Spin()
+        if self.spinnable == True:
+            self.ui.Spin()
 
 class WheelUI():
     TRIANGLE_WIDTH  = 20

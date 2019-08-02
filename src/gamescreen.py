@@ -20,6 +20,5 @@ class GameScreen():
         self.wheel.ProcessUiEvent(event)
         self.scoreboard.ProcessUiEvent(event)
 
-
     def startRound(self, round_num, round_qset):
         self.board.startRound(round_num, round_qset)

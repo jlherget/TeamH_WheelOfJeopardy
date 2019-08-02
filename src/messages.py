@@ -150,10 +150,9 @@ class OutOfQuestionsMessage():
 
 
 class BoardToQuestionMessage():
-    def __init__(self, q_text, q_answer, player_number, free_token, value):
+    def __init__(self, q_text, q_answer, free_token, value):
         self.q_text = q_text
         self.q_answer = q_answer
-        self.player_number = player_number
         self.free_token = free_token
         self.value = value
 
@@ -189,16 +188,11 @@ class BoardToQuestionMessage():
 
 
 class QuestionsResultMessage():
-    def __init__(self, result, net_amount, player_number, free_token_used):
+    def __init__(self, result, net_amount, free_token_used, questions_left):
         self.result = result
         self.net_amount = net_amount
-        self.player_number = player_number
         self.free_token_used = free_token_used
-
-    def run(self, target):
-        print("Running QuestionsResultMessage: (result=", self.result, "), (net_amount=", self.net_amount, "), (player #=", self.player_number, "), (free_token=", self.free_token_used, ")")
-        print("QUESTION ANSWERED, PRESS SPACE TO SPIN THE WHEEL")
-        target.wheelTurn = True
+        self.questions_left = questions_left
 
     def getResult(self):
         return self.result
@@ -206,8 +200,8 @@ class QuestionsResultMessage():
     def getNetAmount(self):
         return self.net_amount
 
-    def getPlayerNumber(self):
-        return self.player_number
+    def getQuestionsLeft(self):
+        return self.questions_left
 
     def getFreeTokenUsed(self):
         return self.free_token_used

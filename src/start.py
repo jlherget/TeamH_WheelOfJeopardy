@@ -146,8 +146,8 @@ class Start():
 
                 # Go through 5 quesitons per category
                 for q in range(5):
-                    question_text = f.readline()
-                    answer_text   = f.readline()
+                    question_text = f.readline().strip()
+                    answer_text   = f.readline().strip()
                     catSet.addQuestionAndAnswer(question_text, answer_text)
                 roundSet.addCategory(catSet)
             gameSet.addRound(roundSet)
