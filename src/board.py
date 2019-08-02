@@ -2,8 +2,7 @@ import pygame
 import ui_utils
 from ui_utils import Button
 import messages
-from pprint import pprint
-from roundset import RoundSet
+from questionset import RoundSet
 
 class BoardUI():
     NUM_COLS   = 6
@@ -238,11 +237,6 @@ class BoardUI():
                 if self.cat6_button.isHighlighted(pygame.mouse.get_pos()):
                     self.parent.sendQuestion(5)
 
-
-    def displayQuestion(self, q_text, q_answer, value):
-        self.parent.qa = QASet(q_text, q_answer, value)
-        self.parent.ui.question_phase = 1
-
 class QASet():
     def __init__(self, question, answer, value):
         self.question = question
@@ -253,21 +247,14 @@ class Board():
     def __init__(self, app):
         self.running = True
         self.app     = app
-        self.data_list = []
         self.qa      = QASet("", "", -1)
         self.ui      = BoardUI(self, app, 320, 0)
-
-        self.q_count = [5, 5, 5, 5, 5, 5]
-        self.qset = RoundSet()
+        self.qset    = RoundSet()
         self.roundNum = 0
 
     def startRound(self, roundNum, round_qset):
         self.qset = round_qset
         self.roundNum = roundNum
-
-    def boardReset(self, data_list):
-        self.data_list = data_list
-        self.q_count = [5, 5, 5, 5, 5, 5]
 
     def questionsRemaining(self):
         total_q_count = 0
@@ -288,7 +275,7 @@ class Board():
                 answer   = category.answer[q_pos]
                 value = (q_pos+1)*200*self.roundNum
                 self.qset.category[section].q_count -= 1
-                self.ui.displayQuestion(question, answer, value)
+                self.displayQuestion(question, answer, value)
             else:
                 # Shouldn't happen
                 print("Out of questions, spinning again!")
@@ -301,6 +288,10 @@ class Board():
 
     def playerSelectsCategory(self):
         self.ui.question_phase = 4
+ 
+    def displayQuestion(self, q_text, q_answer, value):
+        self.qa = QASet(q_text, q_answer, value)
+        self.ui.question_phase = 1
 
     def Draw(self, screen):
         self.ui.Draw(screen)
