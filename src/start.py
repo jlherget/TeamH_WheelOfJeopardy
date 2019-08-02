@@ -5,7 +5,7 @@ import ui_utils
 import messages
 
 class StartUI():
-    
+
     def __init__(self, app):
         self.running = True
         self.app     = app
@@ -16,21 +16,21 @@ class StartUI():
         self.numPlayers4_button = Button(40,480,  ui_utils.BLUE,  260,  75, "4")
         self.edit_button        = Button(400,300, ui_utils.BLUE,  420, 100, "Edit Questions/Answers")
         self.num_players        = 1
-        
+
     def Draw(self, screen):
         font = pygame.font.SysFont('arial', 35)
         text = font.render("Number of Players", 1, (0,0,0))
-        screen.blit(text, (40 , 150))   
-            
+        screen.blit(text, (40 , 150))
+
         self.start_button.Draw(screen, 60)
         self.edit_button.Draw(screen, 40)
         self.numPlayers1_button.Draw(screen, 35)
         self.numPlayers2_button.Draw(screen, 35)
         self.numPlayers3_button.Draw(screen, 35)
         self.numPlayers4_button.Draw(screen, 35)
-        
+
     def ProcessUiEvent(self, event):
-        
+
         #Check to see if the mouse is moving. If so, highlight the button.
         # If the button is clicked, send a start message to the queue
         if event.type == pygame.MOUSEMOTION:
@@ -75,27 +75,27 @@ class StartUI():
                 self.numPlayers4_button.color = ui_utils.GREEN
 
 class Start():
-    
+
     def __init__(self, app):
         self.app            = app
         self.main_list      = []
         self.firstCall      = True
         self.ingestText() # Need to delay this until the game actually starts
         self.ui    = StartUI(app)
-    
+
     def Draw(self, screen):
         self.ui.Draw(screen)
-        
+
     def ProcessUiEvent(self, event):
         self.ui.ProcessUiEvent(event)
-        
+
 
     # Replace Category:
     # ------------------------------------------
     # num_cat: The category number to be replaced
     # c_list: The list new list of Category, Questions and Answers
     # This function simply replaces the current list of Categories, Questions, and Answers
-    #	and writes the new main_list to the original text file in its original format  
+    #	and writes the new main_list to the original text file in its original format
     #   should be called whenever the user has saved a change to the questions/answers
 
     def replaceCategory(self, num_cat, c_list):
@@ -113,8 +113,8 @@ class Start():
 
     # Ingest Text:
     # ------------------------------------------
-    # This function reads from the category_question_answer.txt file that is storing the 
-    #    current Categories, questions, and answers. While it is reading the file, it is 
+    # This function reads from the category_question_answer.txt file that is storing the
+    #    current Categories, questions, and answers. While it is reading the file, it is
     #    sorting each category with its questions and answers into its own list, and then
     #    appending that to its master list. Should be called during the init of the class
     #    Text file format is as follows:
@@ -143,4 +143,5 @@ class Start():
                 self.firstCall = False
             else:
                 temp_list.append(line.strip())
+        self.main_list.append(temp_list)
         f.close()
