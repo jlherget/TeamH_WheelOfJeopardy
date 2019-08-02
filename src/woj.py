@@ -86,7 +86,6 @@ class WoJ():
         self.current_screen = self.game_screen
         self.num_players    = num_players
         self.players        = [player.Player() for i in range(num_players)]
-        self.cur_player     = self.players[0]
         self.cur_player_index = 0
         self.game_qset      = game_qset
         self.spinsRemaining = 50
@@ -98,7 +97,7 @@ class WoJ():
 
     def curPlayerTokenCount(self):
         """Reurn the number of tokens the current player has"""
-        return self.cur_player.playerTokenCount
+        return self.players[self.cur_player_index].playerTokenCount
     
     def wheelResult(self, section):
         self.spinsRemaining -= 1
@@ -123,7 +122,7 @@ class WoJ():
             self.game_screen.board.sendQuestion(5)
         elif section == FREE_SPIN:
             print("Free spin section")
-            self.cur_player.grantSpinToken()
+            self.players[self.cur_player_index].grantSpinToken()
             self.nextPlayer()
             self.startNextTurn()
         elif section == LOSE_TURN:
@@ -141,13 +140,13 @@ class WoJ():
             print("Opponent choose cat section")
             self.game_screen.board.opponentSelectsCategory()
         elif section == DOUBLE_SCORE:
-            print("Double score section")
+            print("players[self.cur_player_index] score section")
             self.cur_player.doubleScore()
             self.nextPlayer()
             self.startNextTurn()
         elif section == BANKRUPT:
             print("Bankrupt section")
-            self.cur_player.bankrupt()
+            self.players[self.cur_player_index].bankrupt()
             self.nextPlayer()
             self.startNextTurn()
         else:
@@ -156,7 +155,6 @@ class WoJ():
 
     def nextPlayer(self):
         self.cur_player_index = (self.cur_player_index + 1) % self.num_players
-        self.cur_player       = self.players[self.cur_player_index]
 
     def startNextTurn(self):
         if self.spinsRemaining <= 0:
@@ -166,11 +164,11 @@ class WoJ():
 
     def questionResult(self, result):
         if result.getResult():
-            self.cur_player.addPoints(result.getNetAmount())
+            self.players[self.cur_player_index].addPoints(result.getNetAmount())
         else:
-            self.cur_player.addPoints(-result.getNetAmount())
+            self.players[self.cur_player_index].addPoints(-result.getNetAmount())
             if result.getFreeTokenUsed():
-                self.cur_player.useToken()
+                self.players[self.cur_player_index].useToken()
             else:
                 self.nextPlayer()
         self.startNextTurn()
