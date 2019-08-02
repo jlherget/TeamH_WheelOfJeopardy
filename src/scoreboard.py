@@ -71,17 +71,17 @@ class ScoreboardUI():
             text = font.render(player_text, True, ui_utils.WHITE)
             screen.blit(text, [x, y])
 
-            round1_text = '$%i' % self.app.players[i].playerRound1Score
+            round1_text = '$%i' % self.app.players[i].playerRoundScore[0]
             text = font.render(round1_text, True, ui_utils.WHITE)
             x += col_width
             screen.blit(text, [x, y])
 
-            round2_text = '$%i' % self.app.players[i].playerRound2Score
+            round2_text = '$%i' % self.app.players[i].playerRoundScore[1]
             text = font.render(round2_text, True, ui_utils.WHITE)
             x += col_width
             screen.blit(text, [x, y])
 
-            total_text = '$%i' % (self.app.players[i].playerRound1Score + self.app.players[i].playerRound2Score)
+            total_text = '$%i' % (self.app.players[i].finalScore())
             text = font.render(total_text, True, ui_utils.WHITE)
             x += col_width
             screen.blit(text, [x, y])

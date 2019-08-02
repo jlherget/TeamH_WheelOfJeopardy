@@ -140,8 +140,8 @@ class WoJ():
             print("Opponent choose cat section")
             self.game_screen.board.opponentSelectsCategory()
         elif section == DOUBLE_SCORE:
-            print("players[self.cur_player_index] score section")
-            self.cur_player.doubleScore()
+            print("Double score section")
+            self.players[self.cur_player_index].doubleScore()
             self.nextPlayer()
             self.startNextTurn()
         elif section == BANKRUPT:
