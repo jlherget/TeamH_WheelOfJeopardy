@@ -88,12 +88,12 @@ class WoJ():
         self.players        = [player.Player() for i in range(num_players)]
         self.cur_player_index = 0
         self.game_qset      = game_qset
-        self.spinsRemaining = 50
         self.startRound(1)
     
     def startRound(self, round_num):
         self.cur_round = round_num
-        self.game_screen.startRound(round_num, self.game_qset.getRound(round_num))
+        self.game_screen.startRound(round_num, self.game_qset.getRound(round_num-1))
+        self.spinsRemaining = 1
 
     def curPlayerTokenCount(self):
         """Reurn the number of tokens the current player has"""
@@ -104,21 +104,27 @@ class WoJ():
 
         if section == CAT_1:
             print("Category %i" % 1)
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.sendQuestion(0)
         elif section == CAT_2:
             print("Category %i" % 2)
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.sendQuestion(1)
         elif section == CAT_3:
             print("Category %i" % 3)
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.sendQuestion(2)
         elif section == CAT_4:
             print("Category %i" % 4)
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.sendQuestion(3)
         elif section == CAT_5:
             print("Category %i" % 5)
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.sendQuestion(4)
         elif section == CAT_6:
             print("Category %i" % 6)
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.sendQuestion(5)
         elif section == FREE_SPIN:
             print("Free spin section")
@@ -135,9 +141,11 @@ class WoJ():
                 self.startNextTurn()
         elif section == CHOOSE_CAT:
             print("Choose cat section")
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.playerSelectsCategory()
         elif section == OPPONENT_CHOOSE_CAT:
             print("Opponent choose cat section")
+            self.game_screen.wheel.disableSpin()
             self.game_screen.board.opponentSelectsCategory()
         elif section == DOUBLE_SCORE:
             print("Double score section")
