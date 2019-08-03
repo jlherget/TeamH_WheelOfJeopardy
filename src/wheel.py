@@ -5,10 +5,18 @@ import math
 import messages
 
 class Wheel():
+
     def __init__(self, app):
         self.running = True
         self.app     = app
         self.ui      = WheelUI(app, 10, 60)
+        self.spinnable = False
+
+    def enableSpin(self):
+        self.spinnable = True
+    
+    def disableSpin(self):
+        self.spinnable = False
 
     def PostMessage(self, message):
         self.app.queue.put(message)
@@ -20,7 +28,8 @@ class Wheel():
         self.ui.ProcessUiEvent(event)
 
     def Spin(self):
-        self.ui.Spin()
+        if self.spinnable == True:
+            self.ui.Spin()
 
 class WheelUI():
     TRIANGLE_WIDTH  = 20
@@ -69,7 +78,7 @@ class WheelUI():
 
                 print("SPIN COMPLETED, SENDING OUTPUT TO MAIN")
                 sector = math.floor(self.angle / (360 / 12))
-                self.app.PostMessage(messages.SpinOutMessage(sector))
+                self.app.wheelResult(sector)
             self.angle %= 360
 
         rot_image = pygame.transform.rotate(self.wheel_img, self.angle)
@@ -91,10 +100,7 @@ class WheelUI():
     def ProcessUiEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                if self.app.wheelTurn:
-                    self.app.PostMessage(messages.SpinInMessage())
-                    self.Spin()
-
+                self.Spin()
 
 
 #todo

@@ -3,12 +3,14 @@ from ui_utils import Button
 import pygame
 import ui_utils
 import messages
+from questionset import GameSet, RoundSet, CategorySet
 
 class StartUI():
 
-    def __init__(self, app):
+    def __init__(self, parent, app):
         self.running = True
         self.app     = app
+        self.parent  = parent
         self.start_button       = Button(350,30,  ui_utils.BLUE,  200, 150, "START")
         self.numPlayers1_button = Button(40,210,  ui_utils.GREEN, 260,  75, "1")
         self.numPlayers2_button = Button(40,300,  ui_utils.BLUE,  260,  75, "2")
@@ -41,7 +43,8 @@ class StartUI():
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # If start button is pressed, send a StartMessage
             if self.start_button.isHighlighted(pygame.mouse.get_pos()):
-                self.app.PostMessage(messages.StartMessage(self.num_players, self.app.start_screen.main_list))
+                gameSet = self.parent.ingestText()
+                self.app.startGame(self.num_players, gameSet)
 
             # If the edit button is pressed, send a EditMessage
             if self.edit_button.isHighlighted(pygame.mouse.get_pos()):
@@ -80,8 +83,7 @@ class Start():
         self.app            = app
         self.main_list      = []
         self.firstCall      = True
-        self.ingestText() # Need to delay this until the game actually starts
-        self.ui    = StartUI(app)
+        self.ui             = StartUI(self, app)
 
     def Draw(self, screen):
         self.ui.Draw(screen)
@@ -122,26 +124,32 @@ class Start():
     #		<Question 1 of Category 1>
     #		<Answer 1 of Category 1>
     #		. . .
-    #		<Answer 6 of Category 1>
+    #		<Answer 5 of Category 1>
     # 		Category: <Name of Category 2>
     # 		. . .
 
     def ingestText(self):
-        temp_list = []
         textfile = "resources/category_question_answer.txt"
         f = open(textfile, "r")
-        for line in f.readlines():
-            if "Category:" in line:
-                category = line.split("Category: ")
-                if self.firstCall:
-                    temp_list.append(category[len(category)-1].strip())
-                    self.firstCall = False
-                else:
-                    self.main_list.append(temp_list)
-                    temp_list = []
-                    temp_list.append(category[len(category)-1].strip())
-                self.firstCall = False
-            else:
-                temp_list.append(line.strip())
-        self.main_list.append(temp_list)
+        gameSet = GameSet()
+
+        # Go through both rounds
+        for r in range(2):
+            roundSet = RoundSet()
+
+            # Go through 6 categories per round
+            for cat in range(6):
+                line = f.readline()
+                category = line.split("Category: ")[1].strip()
+
+                catSet = CategorySet(category)
+
+                # Go through 5 quesitons per category
+                for q in range(5):
+                    question_text = f.readline().strip()
+                    answer_text   = f.readline().strip()
+                    catSet.addQuestionAndAnswer(question_text, answer_text)
+                roundSet.addCategory(catSet)
+            gameSet.addRound(roundSet)
         f.close()
+        return gameSet
