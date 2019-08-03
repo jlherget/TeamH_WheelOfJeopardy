@@ -105,7 +105,7 @@ class BoardUI():
                 for c  in range(self.NUM_COLS):
                     x = self.pos_x + self.COL_WIDTH*c + self.COL_WIDTH / 3
                     y = self.pos_y + self.QY_OFFSET + self.ROW_HEIGHT * r + self.ROW_HEIGHT / 2.5
-                    s = '${}'.format((r+1) * self.BASE_VALUE)
+                    s = '${}'.format((r+1) * self.BASE_VALUE * self.app.cur_round)
                     text = font.render(s, True, ui_utils.YELLOW)
                     if r > 4-self.parent.qset.category[c].q_count:
                         screen.blit(text, [x, y])

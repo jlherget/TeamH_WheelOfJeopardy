@@ -100,7 +100,7 @@ class WheelUI():
     def ProcessUiEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.Spin()
+                self.app.game_screen.wheel.Spin()
 
 
 #todo
