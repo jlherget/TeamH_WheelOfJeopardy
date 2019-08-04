@@ -30,8 +30,8 @@ class WoJ():
         self.spinsRemaining     = 0
         self.cur_round          = 0
         self.players            = []
-        self.game_over          = False       
- 
+        self.game_over          = False
+
         # Set mode before creating the WoJ screens
         self.screen             = pygame.display.set_mode(ui_utils.SCREEN_SIZE)
 
@@ -81,6 +81,7 @@ class WoJ():
 
     def showStartScreen(self):
         self.current_screen = self.start_screen
+        self.game_over = False
 
     def startGame(self, num_players, game_qset):
         """Start the game with the given question/answer set and the number of players"""
@@ -90,17 +91,17 @@ class WoJ():
         self.cur_player_index = 0
         self.game_qset      = game_qset
         self.startRound(1)
-    
+
     def startRound(self, round_num):
         self.game_screen.wheel.enableSpin()
         self.cur_round = round_num
         self.game_screen.startRound(round_num, self.game_qset.getRound(round_num-1))
-        self.spinsRemaining = 50
+        self.spinsRemaining = 1
 
     def curPlayerTokenCount(self):
         """Reurn the number of tokens the current player has"""
         return self.players[self.cur_player_index].playerTokenCount
-    
+
     def wheelResult(self, section):
         self.spinsRemaining -= 1
 
@@ -165,7 +166,6 @@ class WoJ():
 
     def nextPlayer(self):
         self.cur_player_index = (self.cur_player_index + 1) % self.num_players
-        print(self.cur_player_index)
 
     def startNextTurn(self):
         if self.spinsRemaining <= 0:

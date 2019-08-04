@@ -212,11 +212,11 @@ class BoardUI():
             elif event.type == pygame.MOUSEBUTTONDOWN:
 
                 if self.freespin_yes.isHighlighted(pygame.mouse.get_pos()):
-                    self.app.questionResult(messages.QuestionsResultMessage(False, self.parent.qa.value, True,  self.parent.questionsRemaining()))                   
+                    self.app.questionResult(messages.QuestionsResultMessage(False, self.parent.qa.value, True,  self.parent.questionsRemaining()))
                 if self.freespin_no.isHighlighted(pygame.mouse.get_pos()):
                     self.app.questionResult(messages.QuestionsResultMessage(False ,self.parent.qa.value, False,  self.parent.questionsRemaining()))
                 self.question_phase = 0
-                    
+
         elif self.question_phase == 4 or self.question_phase == 5:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.cat1_button.isHighlighted(pygame.mouse.get_pos()):
@@ -263,7 +263,6 @@ class Board():
             category = self.qset.category[section]
 
             #Check to see if questions are left
-            print(category.q_count)
             if category.q_count > 0:
                 q_pos    = 5-category.q_count
                 question = category.question[q_pos]
@@ -283,7 +282,7 @@ class Board():
 
     def playerSelectsCategory(self):
         self.ui.question_phase = 4
- 
+
     def displayQuestion(self, q_text, q_answer, value):
         self.qa = QASet(q_text, q_answer, value)
         self.ui.question_phase = 1

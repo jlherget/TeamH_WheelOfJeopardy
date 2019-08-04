@@ -128,7 +128,7 @@ class ScoreboardUI():
         max = self.app.players[0].finalScore()
         tie = False
         for i in range(self.app.num_players):
-            if self.app.players[i].finalScore() == max:
+            if self.app.players[i].finalScore() == max and i is not 0:
                 tie = True
             if self.app.players[i].finalScore() > max:
                 max = self.app.players[i].finalScore()

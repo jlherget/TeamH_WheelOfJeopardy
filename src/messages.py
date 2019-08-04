@@ -45,6 +45,7 @@ class RestartMessage():
     def run(self, target):
         print("Running RestartMessage")
         target.current_screen = target.start_screen
+        target.game_over = False
 
 # Kill Message:
 # ------------------------------------------
