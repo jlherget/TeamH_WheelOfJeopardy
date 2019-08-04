@@ -6,19 +6,20 @@ import ui_utils
 import gamescreen
 import player
 
-
-CAT_6 = 11
-FREE_SPIN = 10
-CAT_5 = 9
-LOSE_TURN = 8
-CAT_4 = 7
-DOUBLE_SCORE = 6
-CAT_3 = 5
-BANKRUPT = 4
-CAT_2 = 3
+# Define the sectors. This is the order of the categories
+# in the wheel image.
+CAT_6               = 11
+FREE_SPIN           = 10
+CAT_5               = 9
+LOSE_TURN           = 8
+CAT_4               = 7
+DOUBLE_SCORE        = 6
+CAT_3               = 5
+BANKRUPT            = 4
+CAT_2               = 3
 OPPONENT_CHOOSE_CAT = 2
-CAT_1 = 1
-CHOOSE_CAT = 0
+CAT_1               = 1
+CHOOSE_CAT          = 0
 
 class WoJ():
 
@@ -28,7 +29,7 @@ class WoJ():
         self.running            = True
         self.num_players        = 1
         self.spinsRemaining     = 0
-        self.cur_round          = 0
+        self.cur_round          = 0             # 1 Based
         self.players            = []
         self.game_over          = False
 
@@ -194,13 +195,23 @@ class WoJ():
             self.gameEnd()
 
     def noQuestionsInCategory(self):
+        print("NO QUESTIONS REMAINING IN CATEGORY - Spin Again")
         self.game_screen.wheel.enableSpin()
+
 
     def gameEnd(self):
         self.game_screen.wheel.disableSpin()
         self.game_over = True
         print("Game over")
 
+    def kill(self):
+        self.running = False
+        print("KILLING APP")
+
+    def restart(self):
+        self.current_screen = self.start_screen
+        self.game_over = False
+        print("RESTATING APP")
 
     @staticmethod
     def main():
