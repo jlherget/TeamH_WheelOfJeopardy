@@ -1,4 +1,6 @@
 import pygame
+from decimal import Decimal
+from timeit import default_timer as timer
 import ui_utils
 from ui_utils import Button
 import messages
@@ -26,6 +28,9 @@ class BoardUI():
         self.app                = app
         self.pos_x              = pos_x
         self.pos_y              = pos_y
+        self.timerInit          = False
+        self.timerStart         = timer()
+
         #Question Phase States:
         #   - 0: Board normal
         #   - 1: Show Question
@@ -111,16 +116,38 @@ class BoardUI():
                         screen.blit(text, [x, y])
 
         elif self.question_phase == 1:
+            if not self.timerInit:
+                self.timerStart = timer()
+                self.timerInit = True
+            end = timer()
+
+            timeLeft = Decimal(10 - (end -self.timerStart))
+            font = pygame.font.SysFont('Calibri', 34, True, False)
+            s = "Timer: " + str(round(timeLeft, 2)) + " Seconds Left!"
+            self.show_answer_button.Draw(screen, 60)
+            if (end-self.timerStart) >= 10:
+                s = "Timer: 0 Seconds Left!"
+                if self.app.curPlayerTokenCount() <= 0:
+                    self.app.questionResult(messages.QuestionsResultMessage(False,self.parent.qa.value, False,  self.parent.questionsRemaining()))
+                    self.question_phase = 0
+                    self.timerInit = False
+                else:
+                    self.question_phase = 3
+                    self.timerInit = False
+
+            text = font.render(s, True, ui_utils.YELLOW)
+            screen.blit(text, [self.pos_x+15, self.pos_y+40])
             font = pygame.font.SysFont('Calibri', 34, True, False)
             s = '{}'.format("Question:  " + self.parent.qa.question)
             text = font.render(s, True, ui_utils.YELLOW)
-            screen.blit(text, [self.pos_x+15, self.pos_y+40])
+            screen.blit(text, [self.pos_x+15, self.pos_y+80])
             s = '{}'.format("Value:  $" + str(self.parent.qa.value))
             text = font.render(s, True, ui_utils.YELLOW)
-            screen.blit(text, [self.pos_x+15, self.pos_y+80])
+            screen.blit(text, [self.pos_x+15, self.pos_y+120])
             self.show_answer_button.Draw(screen, 60)
 
         elif self.question_phase == 2:
+            self.timerInit = False
             self.incorrect_button.Draw(screen, 30)
             self.correct_button.Draw(screen, 30)
             font = pygame.font.SysFont('Calibri', 34, True, False)
