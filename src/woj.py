@@ -1,5 +1,4 @@
 import start
-import queue
 import pygame
 import data_editor
 import ui_utils
@@ -25,7 +24,6 @@ class WoJ():
 
     def __init__(self):
         pygame.init()
-        self.queue              = queue.Queue()
         self.running            = True
         self.num_players        = 1
         self.spinsRemaining     = 0
@@ -50,13 +48,7 @@ class WoJ():
         print("After Start, Press 1 to Restart, Press 2 to Kill")
 
         while self.running:
-            # Pop tasks off the message queue
-            if not self.queue.empty():
-                task = self.queue.get()
-                if task is None:
-                    break
-                task.run(self)
-                self.queue.task_done()
+
             #Fetch Game event
             for event in pygame.event.get():
                 #If game ends, program ends
@@ -218,9 +210,6 @@ class WoJ():
         app = WoJ()
         app.run()
         pygame.quit()
-
-    def PostMessage(self, message):
-        self.queue.put(message)
 
 if __name__ == '__main__':
     WoJ.main()
