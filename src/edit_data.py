@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 
-
+#
 # STEP 1: CREATE CANVAS FOR CATEGORY BUTTONS AND LABELS
 root = Tk()
 root.title("Wheel of Jeopardy: Question/Answer Editor")
