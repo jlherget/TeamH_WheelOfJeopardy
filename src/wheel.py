@@ -6,8 +6,7 @@ import messages
 
 class Wheel():
 
-    WHEEL_SPIN_ACC          = 0.02
-    WHEEL_SPIN_ANG_VEL_INIT = -5
+    WHEEL_SPIN_ACC          = 180
 
     def __init__(self, app):
         self.app            = app
@@ -15,8 +14,6 @@ class Wheel():
         self.spinnable      = False
         self.angle          = 0
         self.angle_vel      = 0
-        self.angle_acc      = 0
-        self.prev_angle_vel = 0
 
     def enableSpin(self):
         self.spinnable = True
@@ -28,20 +25,25 @@ class Wheel():
 
          # If the wheel is spinning, update the image angle
         if self.angle_vel != 0:
-            self.angle           += self.angle_vel
-            self.prev_angle_vel   = self.angle_vel
-            self.angle_vel       += self.WHEEL_SPIN_ACC + random.randrange(0, 1)/10000
+            current_time = pygame.time.get_ticks()
+            dt = (current_time - self.start_spin_time) / 1000 # Convert from ms to seconds
 
-            # Check if the wheel has stopped (i.e. velocity sign changes)
-            if self.angle_vel == 0 or math.copysign(self.angle_vel, self.prev_angle_vel) != self.angle_vel:
+            # angular velocity (to detect when spinning has stopped)
+            # w = alpha * dt   (w_0 is 0)
+            self.angle_vel = self.angle_vel_start + self.angle_accel * dt #+ random.randrange(0, 1)/10000
+
+            # angular position
+            # theta = theta_0 + w_0 * dt + alpha/2 * dt^2
+            self.angle = self.angle_start + self.angle_vel_start * dt + (self.angle_accel/ 2) * dt**2
+            self.angle %= 360 
+
+            # Check if the wheel has stopped (i.e. velocity sign goes positive)
+            if self.angle_vel >= 0:
                 self.angle_vel = 0
                 sector = math.floor(self.angle / (360 / 12))
 
                 print("SPIN COMPLETED, SENDING SECTOR %i TO MAIN" % sector)
                 self.app.wheelResult(sector)
-
-            # Keep angle between 0 and 360
-            self.angle %= 360
 
         self.ui.Draw(screen)
 
@@ -53,8 +55,12 @@ class Wheel():
         # Start spinning the wheel, if it's not already spinning and
         # we are allowed to spin it
         if self.spinnable == True and self.angle_vel == 0:
-            print("SPINNING WHEEL")
-            self.angle_vel = random.randrange(-10, -6)
+            self.start_spin_time  = pygame.time.get_ticks()
+            self.angle_start      = self.angle
+            self.angle_vel_start  = random.uniform(-700, -400)
+            self.angle_vel        = self.angle_vel_start
+            self.angle_accel      = random.uniform(140, 100)
+            print("SPINNING WHEEL - VEL %f ACC %f" % (self.angle_vel, self.angle_accel))
 
 class WheelUI():
     TRIANGLE_WIDTH  = 20
