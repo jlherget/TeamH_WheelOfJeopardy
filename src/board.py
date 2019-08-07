@@ -191,9 +191,9 @@ class BoardUI():
     def ProcessUiEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
-                self.app.PostMessage(messages.RestartMessage())
+                self.app.restart()
             if event.key == pygame.K_2:
-                self.app.PostMessage(messages.KillMessage())
+                self.app.kill()
 
         if self.question_phase == 1:
             if event.type == pygame.MOUSEMOTION:
