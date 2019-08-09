@@ -54,6 +54,8 @@ class Wheel():
     def Spin(self):
         # Start spinning the wheel, if it's not already spinning and
         # we are allowed to spin it
+        wheel_spin = pygame.mixer.Sound("resources/wheel.wav")
+        wheel_spin.play()
         if self.spinnable == True and self.angle_vel == 0:
             self.start_spin_time  = pygame.time.get_ticks()
             self.angle_start      = self.angle
