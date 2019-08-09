@@ -93,7 +93,7 @@ class WoJ():
         self.game_screen.wheel.enableSpin()
         self.cur_round = round_num
         self.game_screen.startRound(round_num, self.game_qset.getRound(round_num-1))
-        self.spinsRemaining = 50
+        self.spinsRemaining = 2
 
     def curPlayerTokenCount(self):
         """Reurn the number of tokens the current player has"""

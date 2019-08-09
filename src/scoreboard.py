@@ -6,7 +6,7 @@ class Scoreboard():
 
     def __init__(self, app):
         self.app     = app
-        self.ui      = ScoreboardUI(app, 0, board.BoardUI.BOARD_HEIGHT+10)
+        self.ui      = ScoreboardUI(app, 160, board.BoardUI.BOARD_HEIGHT+10)
 
     def Draw(self, screen):
         self.ui.Draw(screen)
@@ -38,7 +38,7 @@ class ScoreboardUI():
 
         # Background for the scoreboard
         boardRect = pygame.Rect([self.pos_x, self.pos_y, self.width, row_height*5+divider_width])
-        pygame.draw.rect(screen, ui_utils.PURPLE, boardRect)
+        pygame.draw.rect(screen, ui_utils.BLUE, boardRect)
 
         #Column dividers
         for col in range(6):
@@ -96,33 +96,33 @@ class ScoreboardUI():
 
         if self.app.game_over:
             text = font.render('GAME OVER', True, ui_utils.WHITE)
-            screen.blit(text, [x,y+50])
+            screen.blit(text, [10,450])
 
             if self.checkTie():
                 text = font.render('Tie Game', True, ui_utils.WHITE)
-                screen.blit(text, [x,y+100])
+                screen.blit(text, [10,510])
             else:
                 text = font.render('Winner:', True, ui_utils.WHITE)
-                screen.blit(text, [x,y+100])
+                screen.blit(text, [10,510])
 
                 text = font.render('Player %i' % (self.findWinner()), True, ui_utils.WHITE)
-                screen.blit(text, [x+50,y+125])
+                screen.blit(text, [10,540])
 
         else:
             text = font.render('Current Player', True, ui_utils.WHITE)
-            screen.blit(text, [x,y])
+            screen.blit(text, [10,450])
             text = font.render('%i' % (self.app.cur_player_index+1), True, ui_utils.WHITE)
-            screen.blit(text, [x+50,y+15])
+            screen.blit(text, [70,480])
 
             text = font.render('Current Round', True, ui_utils.WHITE)
-            screen.blit(text, [x,y+50])
+            screen.blit(text, [10,510])
             text = font.render('%i' % (self.app.cur_round), True, ui_utils.WHITE)
-            screen.blit(text, [x+50,y+65])
+            screen.blit(text, [70,540])
 
             text = font.render('Spins Remainig', True, ui_utils.WHITE)
-            screen.blit(text, [x,y+100])
+            screen.blit(text, [10,570])
             text = font.render('%i' % (self.app.spinsRemaining), True, ui_utils.WHITE)
-            screen.blit(text, [x+50,y+115])
+            screen.blit(text, [70,600])
 
     def checkTie(self):
         max = self.app.players[0].finalScore()

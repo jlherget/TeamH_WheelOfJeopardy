@@ -1,6 +1,7 @@
 import board
 import wheel
 import scoreboard
+import pygame
 
 class GameScreen():
     
@@ -11,9 +12,15 @@ class GameScreen():
         self.scoreboard = scoreboard.Scoreboard(app)
         
     def Draw(self, screen):
+        backgrounImage = pygame.image.load( "resources/background.jpg" )
+        screen.blit( backgrounImage, (0, -150) )
+
+
+        self.wheel.Draw( screen )
         self.board.Draw(screen)
-        self.wheel.Draw(screen)
         self.scoreboard.Draw(screen)
+
+
         
     def ProcessUiEvent(self, event):
         self.board.ProcessUiEvent(event)
