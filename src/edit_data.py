@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 
-#
+
 # STEP 1: CREATE CANVAS FOR CATEGORY BUTTONS AND LABELS
 root = Tk()
 root.title("Wheel of Jeopardy: Question/Answer Editor")
@@ -229,6 +229,13 @@ l.place(relx=0.5, y = spacer, anchor=CENTER)
 # CREATE LABEL FOR WHEN SAVE BUTTON IS PRESSED PRIOR TO SELECTING A CATEGORY
 save_label2 = Label(root, text='Please Select a Category to Edit.', font='Helvetica 14 bold')
 
+usage_label = Label(root, text='Each new category must start with "Category". '
+                               '\nEach category, question and answer must be on their own separate lines.', font='Helvetica 12 bold')
+
+usage_label.place(relx=0.5, rely = 0.44, anchor=CENTER)
+
+
+
 
 # FUNCTION 1: LOAD THE DATA INTO THE EDITOR
 def load_data(filename):
@@ -344,6 +351,7 @@ def retrieve_input():
         for k in range(len(editable_full_list)):
             editable_full_list[k] = new_list[k]
 
+
     except NameError: pass
 
 
@@ -360,17 +368,24 @@ def show_save_label():
 
 def save_and_quit():
 
-    try: flat_list
-    except NameError:
-        root.destroy()
+    #try: flat_list
+    #except NameError:
+     #   root.destroy()
 
     retrieve_input()
-    new_file = open("resources/category_question_answer.txt", "w")
-    for k in flat_list[:-1]:
-        new_file.write("%s\n" % k)
-    new_file.write("%s" % k)
-    new_file.close()
 
+    new_file = open("resources/category_question_answer.txt", "w")
+    try:
+        for k in flat_list[:-1]:
+            new_file.write("%s\n" % k)
+            new_file.write("%s" % k)
+            new_file.close()
+
+    except NameError:
+        for line in open(filename2):
+            new_file.write(line)
+
+    new_file.close()
     root.destroy()
 
 # FUNCTION 6: QUIT DATA EDITOR
