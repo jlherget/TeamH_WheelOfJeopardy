@@ -1,4 +1,4 @@
-from wheel import Section
+from wheel    import Section
 from ui_utils import Colors, SCREEN_SIZE
 
 import start

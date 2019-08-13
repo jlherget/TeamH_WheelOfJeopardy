@@ -1,14 +1,11 @@
-from ui_utils import Button, Colors
+from ui_utils    import Button, Colors
 from questionset import GameSet, RoundSet, CategorySet
 
 import pygame
-import ui_utils
-
 
 class StartUI():
 
     def __init__(self, parent, app):
-        self.running = True
         self.app     = app
         self.parent  = parent
         self.start_button       = Button(350,  30, Colors.BLUE,  200, 150, "START")
@@ -20,6 +17,7 @@ class StartUI():
         self.num_players        = 1
 
     def Draw(self, screen):
+        """Draw the start screen onto the pygame screen object."""
         font = pygame.font.SysFont('arial', 35)
         text = font.render("Number of Players", 1, (0,0,0))
         screen.blit(text, (40 , 150))
@@ -32,6 +30,7 @@ class StartUI():
         self.numPlayers4_button.Draw(screen, 35)
 
     def ProcessUiEvent(self, event):
+        """Process user interface events."""
 
         #Check to see if the mouse is moving. If so, highlight the button.
         # If the button is clicked, send a start message to the queue
@@ -86,20 +85,27 @@ class Start():
         self.ui             = StartUI(self, app)
 
     def Draw(self, screen):
+        """Draw the start screen onto the pygame screen object."""
         self.ui.Draw(screen)
 
     def ProcessUiEvent(self, event):
+        """Process user interface events."""
         self.ui.ProcessUiEvent(event)
 
-    # Replace Category:
-    # ------------------------------------------
-    # num_cat: The category number to be replaced
-    # c_list: The list new list of Category, Questions and Answers
-    # This function simply replaces the current list of Categories, Questions, and Answers
-    #	and writes the new main_list to the original text file in its original format
-    #   should be called whenever the user has saved a change to the questions/answers
-
     def replaceCategory(self, num_cat, c_list):
+        """Updates the question/answer file.
+        
+        This function simply replaces the current list of Categories, Questions, and Answers
+        and writes the new main_list to the original text file in its original format
+        should be called whenever the user has saved a change to the questions/answers.
+
+        Args:
+            num_cat - The category number to be replaced
+            c_list  - The list new list of Category, Questions and Answers
+        Returns:
+            None.
+
+        """
         if num_cat < 5:
             self.main_list[num_cat] = c_list
         else:
@@ -112,39 +118,41 @@ class Start():
                 f.write(outstring)
         f.close()
 
-    # Ingest Text:
-    # ------------------------------------------
-    # This function reads from the category_question_answer.txt file that is storing the
-    #    current Categories, questions, and answers. While it is reading the file, it is
-    #    sorting each category with its questions and answers into its own list, and then
-    #    appending that to its master list. Should be called during the init of the class
-    #    Text file format is as follows:
-    #	 	Category: <Name of Category 1>
-    #		<Question 1 of Category 1>
-    #		<Answer 1 of Category 1>
-    #		. . .
-    #		<Answer 5 of Category 1>
-    # 		Category: <Name of Category 2>
-    # 		. . .
-
     def ingestText(self):
+        """Loads the question/answer file.
+
+        Reads from the category_question_answer.txt file that is storing the
+        current Categories, questions, and answers. While it is reading the file, it is
+        sorting each category with its questions and answers into its own list, and then
+        appending that to its master list. Should be called during the init of the class.
+
+        Text file format is as follows:
+
+        Category: <Name of Category 1>
+        <Question 1 of Category 1>
+        <Answer 1 of Category 1>
+        . . .
+        <Answer 5 of Category 1>
+        Category: <Name of Category 2>
+
+        """
         textfile = "resources/category_question_answer.txt"
         f = open(textfile, "r")
         gameSet = GameSet()
 
         # Go through both rounds
-        for r in range(2):
+        for _ in range(2):
             roundSet = RoundSet()
 
             # Go through 6 categories per round
-            for cat in range(6):
+            for _ in range(6):
                 line = f.readline()
                 category = line.split("Category: ")[1].strip()
 
                 catSet = CategorySet(category)
 
                 # Go through 5 quesitons per category
-                for q in range(5):
+                for _ in range(5):
                     question_text = f.readline().strip()
                     answer_text   = f.readline().strip()
                     catSet.addQuestionAndAnswer(question_text, answer_text)

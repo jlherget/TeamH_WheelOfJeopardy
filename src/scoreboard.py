@@ -11,9 +11,14 @@ class Scoreboard():
         self.ui      = ScoreboardUI(app, 0, board.BoardUI.BOARD_HEIGHT+10)
 
     def Draw(self, screen):
+        """Draw the scoreboard onto the pygame screen."""
         self.ui.Draw(screen)
 
     def ProcessUiEvent(self, event):
+        """Process user interface events.
+        
+        This class does not handle any user interface events.
+        """
         pass
 
 class ScoreboardUI():
@@ -26,6 +31,7 @@ class ScoreboardUI():
         self.height = 40*5+6
 
     def Draw(self, screen):
+        """Draw the scoreboard onto the pygame screen."""
 
         divider_width = 6
 
@@ -127,6 +133,7 @@ class ScoreboardUI():
             screen.blit(text, [x+50,y+115])
 
     def checkTie(self):
+        """Check if there is a tie."""
         max = self.app.players[0].finalScore()
         tie = False
         for i in range(self.app.num_players):
@@ -138,6 +145,7 @@ class ScoreboardUI():
         return tie
 
     def findWinner(self):
+        """Find the palyer with the best score."""
         winner = 0
         max = self.app.players[0].finalScore()
         for i in range(self.app.num_players):
