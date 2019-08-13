@@ -1,9 +1,9 @@
-from ui_utils import Button
+from ui_utils import Button, Colors
+from questionset import GameSet, RoundSet, CategorySet
 
 import pygame
 import ui_utils
-import messages
-from questionset import GameSet, RoundSet, CategorySet
+
 
 class StartUI():
 
@@ -11,12 +11,12 @@ class StartUI():
         self.running = True
         self.app     = app
         self.parent  = parent
-        self.start_button       = Button(350,30,  ui_utils.BLUE,  200, 150, "START")
-        self.numPlayers1_button = Button(40,210,  ui_utils.GREEN, 260,  75, "1")
-        self.numPlayers2_button = Button(40,300,  ui_utils.BLUE,  260,  75, "2")
-        self.numPlayers3_button = Button(40,390,  ui_utils.BLUE,  260,  75, "3")
-        self.numPlayers4_button = Button(40,480,  ui_utils.BLUE,  260,  75, "4")
-        self.edit_button        = Button(400,300, ui_utils.BLUE,  420, 100, "Edit Questions/Answers")
+        self.start_button       = Button(350,  30, Colors.BLUE,  200, 150, "START")
+        self.numPlayers1_button = Button(40,  210, Colors.GREEN, 260,  75, "1")
+        self.numPlayers2_button = Button(40,  300, Colors.BLUE,  260,  75, "2")
+        self.numPlayers3_button = Button(40,  390, Colors.BLUE,  260,  75, "3")
+        self.numPlayers4_button = Button(40,  480, Colors.BLUE,  260,  75, "4")
+        self.edit_button        = Button(400, 300, Colors.BLUE,  420, 100, "Edit Questions/Answers")
         self.num_players        = 1
 
     def Draw(self, screen):
@@ -37,9 +37,9 @@ class StartUI():
         # If the button is clicked, send a start message to the queue
         if event.type == pygame.MOUSEMOTION:
             if self.start_button.isHighlighted(pygame.mouse.get_pos()):
-                self.start_button.color = ui_utils.PURPLE
+                self.start_button.color = Colors.PURPLE
             else:
-                self.start_button.color = ui_utils.BLUE
+                self.start_button.color = Colors.BLUE
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # If start button is pressed, send a StartMessage
             if self.start_button.isHighlighted(pygame.mouse.get_pos()):
@@ -54,28 +54,28 @@ class StartUI():
             # update the number of players and button colors
             if self.numPlayers1_button.isHighlighted(pygame.mouse.get_pos()):
                 self.num_players = 1
-                self.numPlayers1_button.color = ui_utils.GREEN
-                self.numPlayers2_button.color = ui_utils.BLUE
-                self.numPlayers3_button.color = ui_utils.BLUE
-                self.numPlayers4_button.color = ui_utils.BLUE
+                self.numPlayers1_button.color = Colors.GREEN
+                self.numPlayers2_button.color = Colors.BLUE
+                self.numPlayers3_button.color = Colors.BLUE
+                self.numPlayers4_button.color = Colors.BLUE
             if self.numPlayers2_button.isHighlighted(pygame.mouse.get_pos()):
                 self.num_players = 2
-                self.numPlayers1_button.color = ui_utils.BLUE
-                self.numPlayers2_button.color = ui_utils.GREEN
-                self.numPlayers3_button.color = ui_utils.BLUE
-                self.numPlayers4_button.color = ui_utils.BLUE
+                self.numPlayers1_button.color = Colors.BLUE
+                self.numPlayers2_button.color = Colors.GREEN
+                self.numPlayers3_button.color = Colors.BLUE
+                self.numPlayers4_button.color = Colors.BLUE
             if self.numPlayers3_button.isHighlighted(pygame.mouse.get_pos()):
                 self.num_players = 3
-                self.numPlayers1_button.color = ui_utils.BLUE
-                self.numPlayers2_button.color = ui_utils.BLUE
-                self.numPlayers3_button.color = ui_utils.GREEN
-                self.numPlayers4_button.color = ui_utils.BLUE
+                self.numPlayers1_button.color = Colors.BLUE
+                self.numPlayers2_button.color = Colors.BLUE
+                self.numPlayers3_button.color = Colors.GREEN
+                self.numPlayers4_button.color = Colors.BLUE
             if self.numPlayers4_button.isHighlighted(pygame.mouse.get_pos()):
                 self.num_players = 4
-                self.numPlayers1_button.color = ui_utils.BLUE
-                self.numPlayers2_button.color = ui_utils.BLUE
-                self.numPlayers3_button.color = ui_utils.BLUE
-                self.numPlayers4_button.color = ui_utils.GREEN
+                self.numPlayers1_button.color = Colors.BLUE
+                self.numPlayers2_button.color = Colors.BLUE
+                self.numPlayers3_button.color = Colors.BLUE
+                self.numPlayers4_button.color = Colors.GREEN
 
 class Start():
 
@@ -90,7 +90,6 @@ class Start():
 
     def ProcessUiEvent(self, event):
         self.ui.ProcessUiEvent(event)
-
 
     # Replace Category:
     # ------------------------------------------
