@@ -101,14 +101,14 @@ class Wheel():
         """
         # Start spinning the wheel, if it's not already spinning and
         # we are allowed to spin it
-        wheel_spin = pygame.mixer.Sound("resources/wheel.wav")
-        wheel_spin.play()
         if self.spinnable == True and self.angle_vel == 0:
             self.start_spin_time  = pygame.time.get_ticks()
             self.angle_start      = self.angle
             self.angle_vel_start  = random.uniform(-700, -400)
             self.angle_vel        = self.angle_vel_start
             self.angle_decel      = random.uniform(140, 100)
+            wheel_spin = pygame.mixer.Sound("resources/wheel.wav")
+            wheel_spin.play()
             print("SPINNING WHEEL - VEL %f ACC %f" % (self.angle_vel, self.angle_decel))
 
 class WheelUI():

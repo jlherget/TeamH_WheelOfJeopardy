@@ -1,8 +1,8 @@
 from ui_utils import Colors
 
-import board
 import ui_utils
 import pygame
+import board
 
 class Scoreboard():
 
@@ -127,10 +127,10 @@ class ScoreboardUI():
             text = font.render('%i' % (self.app.cur_round), True, Colors.WHITE)
             screen.blit(text, [70,540])
 
-            text = font.render('Spins Remainig', True, Colors.WHITE)
+            text = font.render('Spins Remaining', True, Colors.WHITE)
             screen.blit(text, [10,570])
             text = font.render('%i' % (self.app.spinsRemaining), True, Colors.WHITE)
-            screen.blit(text, [70,600])
+            screen.blit(text, [68,600])
 
     def checkTie(self):
         """Check if there is a tie."""

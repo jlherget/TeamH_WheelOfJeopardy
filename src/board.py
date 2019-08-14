@@ -92,7 +92,7 @@ class BoardUI():
             pygame.draw.rect(screen, Colors.BLACK, [left, top, width, height])
 
         # Draw the dollar amounts that havent been revelead
-        font = pygame.font.SysFont('Calibri', 25, True, False)
+        font = pygame.font.SysFont('ComicSans', 25, True, False)
         for r in range(self.NUM_QROWS):
             for c  in range(self.NUM_COLS):
                 x = self.pos_x + self.COL_WIDTH*c + self.COL_WIDTH / 3
