@@ -77,6 +77,7 @@ class Wheel():
 
             # Check if the wheel has stopped (i.e. velocity sign goes positive)
             if self.angle_vel >= 0:
+                self.wheel_spin.stop()
                 self.angle_vel = 0
                 sector = math.floor(self.angle / (360 / 12))
 
