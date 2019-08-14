@@ -37,6 +37,10 @@ class WoJ():
 
         self.current_screen     = self.start_screen     # Current screen to display. Initialize to start screen.
 
+        self.bankrupt_sound = pygame.mixer.Sound("resources/bankrupt.wav")
+        self.jeopardy_sound = pygame.mixer.Sound("resources/Jeopardy_Music.wav")
+        self.end_of_round   = pygame.mixer.Sound("resources/endofround.wav")
+
     
     def run(self):
         """Starts the application.
@@ -52,8 +56,7 @@ class WoJ():
 
         """
 
-        jeopardy_sound = pygame.mixer.Sound("resources/Jeopardy_Music.wav")
-        jeopardy_sound.play()
+        self.jeopardy_sound.play()
 
         # This sets the name of the window
         pygame.display.set_caption('Wheel of Jeopardy')
@@ -224,8 +227,7 @@ class WoJ():
             self.startNextTurn()
 
         elif section == Section.BANKRUPT:
-            bankrupt_sound = pygame.mixer.Sound("resources/bankrupt.wav")
-            bankrupt_sound.play()
+            self.bankrupt_sound.play()
 
             print("Bankrupt section")
             self.players[self.cur_player_index].bankrupt()
@@ -295,8 +297,7 @@ class WoJ():
         Otherwise, the game is over.
         
         """
-        end_of_round = pygame.mixer.Sound("resources/endofround.wav")
-        end_of_round.play()
+        self.end_of_round.play()
 
         if self.cur_round == 1:
             for p in self.players:

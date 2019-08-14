@@ -52,6 +52,10 @@ class BoardUI():
         self.cat5_button        = Button(pos_x+60,  pos_y+330, Colors.YELLOW, 170, 100, "None")
         self.cat6_button        = Button(pos_x+250, pos_y+330, Colors.YELLOW, 170, 100, "None")
 
+        # Sounds
+        self.incorrect_sound = pygame.mixer.Sound("resources/wrong.wav")
+        self.correct_sound   = pygame.mixer.Sound("resources/correct.wav")
+
     def DrawBoardBackground(self, screen):
         """Draw the background of the board."""
         
@@ -199,13 +203,10 @@ class BoardUI():
                 if self.correct_button.isHighlighted(pygame.mouse.get_pos()):
                     self.app.questionResult(True, self.parent.qa.value, False, self.parent.questionsRemaining())
                     self.parent.question_phase = Phase.NORMAL
-                    correct_sound = pygame.mixer.Sound("resources/correct.wav")
-                    correct_sound.play()
+                    self.correct_sound.play()
 
                 if self.incorrect_button.isHighlighted(pygame.mouse.get_pos()):
-                    
-                    incorrect_sound = pygame.mixer.Sound("resources/wrong.wav")
-                    incorrect_sound.play()
+                    self.incorrect_sound.play()
                     if self.app.curPlayerTokenCount() <= 0:
                         self.app.questionResult(False, self.parent.qa.value, False,  self.parent.questionsRemaining())
                         self.parent.question_phase = Phase.NORMAL
