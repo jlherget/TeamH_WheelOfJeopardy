@@ -12,21 +12,31 @@ class StartUI():
         self.running = True
         self.app     = app
         self.parent  = parent
-        self.start_button       = Button(350,30,  ui_utils.BLUE,  200, 150, "START")
-        self.numPlayers1_button = Button(40,210,  ui_utils.GREEN, 260,  75, "1")
-        self.numPlayers2_button = Button(40,300,  ui_utils.BLUE,  260,  75, "2")
-        self.numPlayers3_button = Button(40,390,  ui_utils.BLUE,  260,  75, "3")
-        self.numPlayers4_button = Button(40,480,  ui_utils.BLUE,  260,  75, "4")
-        self.edit_button        = Button(400,300, ui_utils.BLUE,  420, 100, "Edit Questions/Answers")
+        self.start_button       = Button(500,110,  ui_utils.BLUE,  200, 75, "START")
+        self.numPlayers1_button = Button(50,110,  ui_utils.GREEN, 75,  75, "1")
+        self.numPlayers2_button = Button(135,110,  ui_utils.BLUE,  75,  75, "2")
+        self.numPlayers3_button = Button(50,200,  ui_utils.BLUE,  75,  75, "3")
+        self.numPlayers4_button = Button(135,200,  ui_utils.BLUE,  75,  75, "4")
+        self.edit_button        = Button(400,200, ui_utils.BLUE,  420, 75, "Edit Questions/Answers")
         self.num_players        = 1
 
     def Draw(self, screen):
-        font = pygame.font.SysFont('arial', 35)
-        text = font.render("Number of Players", 1, (0,0,0))
-        screen.blit(text, (40 , 150))
+
+        backgrounImage = pygame.image.load( "resources/background.jpg" )
+        font = pygame.font.SysFont('helvetica', 35)
+        font2 = pygame.font.SysFont( 'helvetica', 50, bold=True)
+        text = font.render("Number of Players", 1, (255,255,255))
+        text2 = font2.render( "Wheel", 1, (50, 50, 50) )
+        text3 = font2.render( " of ", 1, (50, 50, 50) )
+        text4 = font2.render( "Jeopardy", 1, (50, 50, 50) )
+        screen.blit(backgrounImage, (0,-150))
+        screen.blit(text, (20, 50))
+        screen.blit(text2, (450, 450))
+        screen.blit( text3, (480, 500) )
+        screen.blit( text4, (420, 550) )
 
         self.start_button.Draw(screen, 60)
-        self.edit_button.Draw(screen, 40)
+        self.edit_button.Draw(screen, 35)
         self.numPlayers1_button.Draw(screen, 35)
         self.numPlayers2_button.Draw(screen, 35)
         self.numPlayers3_button.Draw(screen, 35)
@@ -49,11 +59,9 @@ class StartUI():
 
             # If the edit button is pressed, send a EditMessage
             if self.edit_button.isHighlighted(pygame.mouse.get_pos()):
-                self.app.PostMessage(messages.EditMessage())
+                self.app.showDataEdtior()
                 # Added Line below: Runs the data editor
                 subprocess.call(['python3', 'edit_data.py'])
-
-
 
             # If any of the number of players buttons are pressed,
             # update the number of players and button colors
