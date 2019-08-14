@@ -378,9 +378,7 @@ def save_and_quit():
     try:
         for k in flat_list[:-1]:
             new_file.write("%s\n" % k)
-            new_file.write("%s" % k)
-            new_file.close()
-
+            
     except NameError:
         for line in open(filename2):
             new_file.write(line)
