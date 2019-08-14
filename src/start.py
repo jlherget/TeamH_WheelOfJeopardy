@@ -57,7 +57,6 @@ class StartUI():
 
             # If the edit button is pressed, send a EditMessage
             if self.edit_button.isHighlighted(pygame.mouse.get_pos()):
-                self.app.showDataEdtior()
                 # Added Line below: Runs the data editor
                 subprocess.call(['python3', 'edit_data.py'])
 
