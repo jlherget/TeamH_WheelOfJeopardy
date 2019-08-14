@@ -199,8 +199,13 @@ class BoardUI():
                 if self.correct_button.isHighlighted(pygame.mouse.get_pos()):
                     self.app.questionResult(True, self.parent.qa.value, False, self.parent.questionsRemaining())
                     self.parent.question_phase = Phase.NORMAL
+                    correct_sound = pygame.mixer.Sound("resources/correct.wav")
+                    correct_sound.play()
 
                 if self.incorrect_button.isHighlighted(pygame.mouse.get_pos()):
+                    
+                    incorrect_sound = pygame.mixer.Sound("resources/wrong.wav")
+                    incorrect_sound.play()
                     if self.app.curPlayerTokenCount() <= 0:
                         self.app.questionResult(False, self.parent.qa.value, False,  self.parent.questionsRemaining())
                         self.parent.question_phase = Phase.NORMAL

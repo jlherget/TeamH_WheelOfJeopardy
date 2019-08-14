@@ -1,21 +1,26 @@
-import board
 import wheel
 import scoreboard
+import pygame
+import board
 
 class GameScreen():
     """Facade class to store the Board, Wheel, and Scoreboard classes."""
     
     def __init__(self, app):
-        self.app     = app
-        self.board   = board.Board(app)
-        self.wheel   = wheel.Wheel(app)
-        self.scoreboard = scoreboard.Scoreboard(app)
+        self.app            = app
+        self.board          = board.Board(app)
+        self.wheel          = wheel.Wheel(app)
+        self.scoreboard     = scoreboard.Scoreboard(app)
+        self.backgroundImage = pygame.image.load( "resources/background.jpg" )
         
     def Draw(self, screen):
         """Draw the Board, Wheel, and Scoreboard onto the pygame screen."""
+        screen.blit(self.backgroundImage, (0, -150) )
+        self.wheel.Draw( screen )
         self.board.Draw(screen)
-        self.wheel.Draw(screen)
         self.scoreboard.Draw(screen)
+
+
         
     def ProcessUiEvent(self, event):
         """Allow the Board, Wheel, and Scoreboard to process user interface events."""

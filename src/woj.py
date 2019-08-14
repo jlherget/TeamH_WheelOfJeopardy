@@ -37,6 +37,7 @@ class WoJ():
 
         self.current_screen     = self.start_screen     # Current screen to display. Initialize to start screen.
 
+    
     def run(self):
         """Starts the application.
         
@@ -51,10 +52,14 @@ class WoJ():
 
         """
 
+        jeopardy_sound = pygame.mixer.Sound("resources/Jeopardy_Music.wav")
+        jeopardy_sound.play()
+
         # This sets the name of the window
         pygame.display.set_caption('Wheel of Jeopardy')
         clock = pygame.time.Clock()
         print("After Start, Press 1 to Restart, Press 2 to Kill")
+        teamHLogo = logo( 10, 650, 50, 50, 830 )
 
         while self.running:
 
@@ -71,6 +76,9 @@ class WoJ():
 
             # Draw the current screen
             self.current_screen.Draw(self.screen)
+
+            # Draw moving logo
+            teamHLogo.draw( self.screen )
 
             # Draw the new screen
             pygame.display.flip()
@@ -216,6 +224,9 @@ class WoJ():
             self.startNextTurn()
 
         elif section == Section.BANKRUPT:
+            bankrupt_sound = pygame.mixer.Sound("resources/bankrupt.wav")
+            bankrupt_sound.play()
+
             print("Bankrupt section")
             self.players[self.cur_player_index].bankrupt()
             self.nextPlayer()
@@ -284,6 +295,9 @@ class WoJ():
         Otherwise, the game is over.
         
         """
+        end_of_round = pygame.mixer.Sound("resources/endofround.wav")
+        end_of_round.play()
+
         if self.cur_round == 1:
             for p in self.players:
                 p.roundEnd()
@@ -334,6 +348,37 @@ class WoJ():
         app.run()
         pygame.quit()
 
+class logo( object ):
+
+    teamH = pygame.transform.scale(pygame.image.load("resources/logo.png"), [60,50])
+
+    def __init__(self, x, y, width, height, end):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.end = end
+        self.path = [self.x, self.end]
+        self.vel = 5
+
+    def draw(self, screen):
+        self.move()
+        screen.blit(self.teamH,(self.x,self.y) )
+
+    def move(self):
+        if self.vel > 0:
+            if self.x + self.vel < self.path[1]:
+                self.x += self.vel
+
+            else:
+                self.vel = self.vel * -1
+
+        else:
+            if self.x - self.vel > self.path[0]:
+                self.x += self.vel
+
+            else:
+                self.vel = self.vel * -1
 
 if __name__ == '__main__':
     WoJ.main()
