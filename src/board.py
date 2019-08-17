@@ -188,32 +188,103 @@ class BoardUI():
 
     def DrawShowQuestion(self, screen):
         """Draw the board while in the SHOW_QUESTION phase."""
+
+        lineSpace = 25
+        lineWrapped = 0 
+
         timeLeft = self.parent.timer.time_left()
         timeLeft = max(timeLeft, 0) # Minimum of 0 seconds left for printing
+
+        remainder = True
+        if len(self.parent.qa.question) % 25 == 0:
+            remainder = False
+        
+        lineWrapped = 0
 
         font = pygame.font.SysFont('Calibri', 34, True, False)
         s = "Timer: %.2f Seconds Left!"  % timeLeft
         text = font.render(s, True, Colors.YELLOW)
-        screen.blit(text, [self.pos_x+15, self.pos_y+40])
+        screen.blit(text, [self.pos_x+15, self.pos_y+30])
 
-        s = "Question: %s" % self.parent.qa.question
-        text = font.render(s, True, Colors.YELLOW)
-        screen.blit(text, [self.pos_x+15, self.pos_y+80])
+        questionWords = self.parent.qa.question.split(" ")
+        printLines = []
+
+        lineWrite = ""
+        for word in questionWords:
+            lineWrite += (word + " ")
+            if len(lineWrite) >= 25:
+                if lineWrapped < 6:
+                    printLines.append(lineWrite)
+                    lineWrite = ""
+                    lineWrapped += 1
+                else:
+                    remainder = True
+        if remainder:
+            printLines.append(lineWrite)
+            lineWrapped += 1
+
+        lineNum = 0
+        for line in printLines:
+            if lineNum == 0:        
+                s = "Question: %s" % line
+                text = font.render(s, True, Colors.YELLOW)
+                screen.blit(text, [self.pos_x+15, self.pos_y+80])
+                lineNum += 1
+            else:
+                s = line
+                text = font.render(s, True, Colors.YELLOW)
+                screen.blit(text, [self.pos_x+20, self.pos_y+80+(lineSpace*lineNum)])
+                lineNum += 1
 
         s = "Value: $%i" % self.parent.qa.value
         text = font.render(s, True, Colors.YELLOW)
-        screen.blit(text, [self.pos_x+15, self.pos_y+120])
+        screen.blit(text, [self.pos_x+15, self.pos_y+100+(lineSpace*lineNum)])
 
+        self.show_answer_button = Button(self.pos_x+60,  self.pos_y+140+(lineSpace*lineNum), Colors.YELLOW, 350, 100, "Show Answer")
         self.show_answer_button.Draw(screen, 60)
 
     def DrawShowAnswer(self, screen):
+        font = pygame.font.SysFont('Calibri', 34, True, False)
+        lineWrapped = 0
+        lineSpace = 25
+
+        remainder = True
+        if len(self.parent.qa.question) % 25 == 0:
+            remainder = False
+        questionWords = self.parent.qa.answer.split(" ")
+        printLines = []
+
+        lineWrite = ""
+        for word in questionWords:
+            lineWrite += (word + " ")
+            if len(lineWrite) >= 25:
+                if lineWrapped < 6:
+                    printLines.append(lineWrite)
+                    lineWrite = ""
+                    lineWrapped += 1
+                else:
+                    remainder = True
+        if remainder:
+            printLines.append(lineWrite)
+            lineWrapped += 1
+
+
+        lineNum = 0
+        for line in printLines:
+            if lineNum == 0:
+                s = "Answer: %s" % line
+                text = font.render(s, True, Colors.YELLOW)
+                screen.blit(text, [self.pos_x+15, self.pos_y+20])
+                lineNum += 1
+            else:
+                s = line
+                text = font.render(s, True, Colors.YELLOW)
+                screen.blit(text, [self.pos_x+20, self.pos_y+20+(lineSpace*lineNum)])
+                lineNum += 1
+
         """Draw the board while in the SHOW_ANSWER phase."""
         self.incorrect_button.Draw(screen, 30)
         self.correct_button.Draw(screen, 30)
-        font = pygame.font.SysFont('Calibri', 34, True, False)
-        s = "Answer: %s" % self.parent.qa.answer
-        text = font.render(s, True, Colors.YELLOW)
-        screen.blit(text, [self.pos_x+15, self.pos_y+20])
 
     def DrawAskSpinToken(self, screen):
         """Draw the board while in the ASK_SPIN_TOKEN phase."""
