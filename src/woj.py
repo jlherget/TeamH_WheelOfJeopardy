@@ -1,5 +1,6 @@
-from wheel    import Section
-from ui_utils import Colors, SCREEN_SIZE
+from wheel      import Section
+from ui_utils   import Colors, SCREEN_SIZE
+from board      import Phase
 
 import start
 import pygame
@@ -205,7 +206,7 @@ class WoJ():
             print("Lose turn section")
             if self.curPlayerTokenCount() > 0:
                 self.game_screen.board.qa.value = 0
-                self.game_screen.board.ui.question_phase = 3
+                self.game_screen.board.question_phase = Phase.ASK_SPIN_TOKEN
             else:
                 self.nextPlayer()
                 self.startNextTurn()

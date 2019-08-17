@@ -3,7 +3,7 @@ from ui_utils    import Button, Colors
 from questionset import RoundSet
 from enum        import Enum
 from timer       import Timer
-from timeit import default_timer as timer
+from timeit      import default_timer as timer
 
 import pygame
 import time
@@ -66,8 +66,8 @@ class BoardUI():
         self.flash_done         = False
 
         # Sounds
-        #self.incorrect_sound = pygame.mixer.Sound("resources/wrong.wav")
-        #self.correct_sound   = pygame.mixer.Sound("resources/correct.wav")
+        self.incorrect_sound = pygame.mixer.Sound("resources/wrong.wav")
+        self.correct_sound   = pygame.mixer.Sound("resources/correct.wav")
 
     def DrawBoardBackground(self, screen):
         """Draw the background of the board."""
@@ -289,10 +289,10 @@ class BoardUI():
                 if self.correct_button.isHighlighted(pygame.mouse.get_pos()):
                     self.app.questionResult(True, self.parent.qa.value, False, self.parent.questionsRemaining())
                     self.parent.question_phase = Phase.NORMAL
-                    #self.correct_sound.play()
+                    self.correct_sound.play()
 
                 if self.incorrect_button.isHighlighted(pygame.mouse.get_pos()):
-                    #self.incorrect_sound.play()
+                    self.incorrect_sound.play()
                     if self.app.curPlayerTokenCount() <= 0:
                         self.app.questionResult(False, self.parent.qa.value, False,  self.parent.questionsRemaining())
                         self.parent.question_phase = Phase.NORMAL
