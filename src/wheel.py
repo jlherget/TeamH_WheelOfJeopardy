@@ -43,7 +43,7 @@ class Wheel():
         self.angle_decel    = 0                             # How quickly to decelerate the wheel        | Deg/s^2
         self.start_spin_time= 0                             # Time wheel was last spun                   | ms, pygame time
 
-        self.wheel_spin     = pygame.mixer.Sound("resources/wheel.wav")
+        #self.wheel_spin     = pygame.mixer.Sound("resources/wheel.wav")
 
     def enableSpin(self):
         """Allow the user to spin the wheel."""
@@ -77,7 +77,7 @@ class Wheel():
 
             # Check if the wheel has stopped (i.e. velocity sign goes positive)
             if self.angle_vel >= 0:
-                self.wheel_spin.stop()
+                #self.wheel_spin.stop()
                 self.angle_vel = 0
                 sector = math.floor(self.angle / (360 / 12))
 
@@ -110,7 +110,7 @@ class Wheel():
             self.angle_vel_start  = random.uniform(-700, -400)
             self.angle_vel        = self.angle_vel_start
             self.angle_decel      = random.uniform(140, 100)
-            self.wheel_spin.play()
+            #self.wheel_spin.play()
             print("SPINNING WHEEL - VEL %f ACC %f" % (self.angle_vel, self.angle_decel))
 
 class WheelUI():
