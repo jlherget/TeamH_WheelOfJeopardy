@@ -3,8 +3,10 @@ from ui_utils    import Button, Colors
 from questionset import RoundSet
 from enum        import Enum
 from timer       import Timer
+from timeit import default_timer as timer
 
 import pygame
+import time
 
 class Phase(Enum):
     """Question phase states."""
@@ -15,6 +17,7 @@ class Phase(Enum):
     ASK_SPIN_TOKEN  = 3
     PLAYER_CHOICE   = 4
     OPPONENT_CHOICE = 5
+    ANIMATION       = 6
 
 class BoardUI():
     """Handles drawing the board onto the pygame screen."""
@@ -52,13 +55,23 @@ class BoardUI():
         self.cat5_button        = Button(pos_x+60,  pos_y+330, Colors.YELLOW, 170, 100, "None")
         self.cat6_button        = Button(pos_x+250, pos_y+330, Colors.YELLOW, 170, 100, "None")
 
+        #Animation Variables
+        self.timerInit          = False
+        self.timerStart         = timer()
+        self.animate            = False
+        self.animate_left       = 0
+        self.animate_top        = 0
+        self.animate_width      = 0
+        self.animate_height     = 0
+        self.flash_done         = False
+
         # Sounds
-        self.incorrect_sound = pygame.mixer.Sound("resources/wrong.wav")
-        self.correct_sound   = pygame.mixer.Sound("resources/correct.wav")
+        #self.incorrect_sound = pygame.mixer.Sound("resources/wrong.wav")
+        #self.correct_sound   = pygame.mixer.Sound("resources/correct.wav")
 
     def DrawBoardBackground(self, screen):
         """Draw the background of the board."""
-        
+
         boardRect = pygame.Rect([self.pos_x, self.pos_y, self.BOARD_WIDTH, self.BOARD_HEIGHT])
         pygame.draw.rect(screen, Colors.BLUE, boardRect)
         pygame.draw.rect(screen, Colors.BLACK, [self.pos_x, self.pos_y, self.BOARD_WIDTH, 5])
@@ -105,6 +118,73 @@ class BoardUI():
                 text = font.render(s, True, Colors.YELLOW)
                 if r > 4-self.parent.qset.category[c].q_count:
                     screen.blit(text, [x, y])
+ 
+    def flashQuestion(self, screen):
+        offset = 5
+        animate_width  = self.animate_right  - self.animate_left
+        animate_height = self.animate_bottom - self.animate_top
+        time_elapsed = self.parent.timer.time_elapsed()
+        if time_elapsed < 0.2:
+            pygame.draw.rect(screen, Colors.YELLOW, [self.animate_left+offset, self.animate_top+offset, animate_width-offset, animate_height-offset])
+        elif time_elapsed < 0.4:
+            pass
+        elif time_elapsed < 0.6:
+            pygame.draw.rect(screen, Colors.YELLOW, [self.animate_left+offset, self.animate_top+offset, animate_width-offset, animate_height-offset])
+        elif time_elapsed < 0.8:
+            pass
+        elif time_elapsed < 1.0:
+            pygame.draw.rect(screen, Colors.YELLOW, [self.animate_left+offset, self.animate_top+offset, animate_width-offset, animate_height-offset])
+        elif time_elapsed < 1.2:
+            pass
+        elif time_elapsed < 1.4:
+            pygame.draw.rect(screen, Colors.YELLOW, [self.animate_left+offset, self.animate_top+offset, animate_width-offset, animate_height-offset])
+        elif time_elapsed < 1.6:
+            pass
+        elif time_elapsed < 1.8:
+            pygame.draw.rect(screen, Colors.YELLOW, [self.animate_left+offset, self.animate_top+offset, animate_width-offset, animate_height-offset])
+        elif time_elapsed < 2.0:
+            pass
+        else:
+            max_y  = self.pos_y + self.BOARD_HEIGHT + 15
+            max_x  = self.pos_x + self.BOARD_WIDTH + 5
+
+            # Checks for which sides of the rectangle are still moving from question to screen edge.
+            leftCheck   = True  # Is the left side of the rectangle still moving?
+            rightCheck  = True  # Is the right side of the rectangle still moving?
+            topCheck    = True  # Is the top side of the rectangle still moving?
+            bottomCheck = True  # Is the bottom side of the rectangle still moving?
+
+            # We want to hit the sides by the end of the timer
+            perc_time_remaining = (2.5 - time_elapsed) / 0.5
+            animate_left   = self.pos_x + (self.animate_left   - self.pos_x) * perc_time_remaining
+            animate_top    = self.pos_y + (self.animate_top    - self.pos_y) * perc_time_remaining # Calculate the current top side
+            animate_right  = max_x - (max_x  - self.animate_right) * perc_time_remaining
+            animate_bottom = max_y - (max_y  - self.animate_bottom) * perc_time_remaining
+
+            if animate_left <= self.pos_x:
+                leftCheck = False
+                animate_left = self.pos_x
+
+            if animate_top <= self.pos_y:
+                topCheck = False
+                animate_top = self.pos_y
+
+            if animate_right >= max_x:
+                rightCheck = False
+                animate_right = max_x
+                
+            if animate_bottom >= max_y:
+                bottomCheck = False
+                animate_bottom = max_y
+            
+            animate_width  = animate_right - animate_left
+            animate_height = animate_bottom - animate_top
+
+            pygame.draw.rect(screen, Colors.YELLOW, [animate_left, animate_top, animate_width, animate_height])
+            if not leftCheck and not rightCheck and not topCheck and not bottomCheck:
+                self.parent.question_phase = Phase.SHOW_QUESTION
+                self.parent.qset.category[self.parent.curr_question[0]].q_count -= 1
+                self.parent.timer.start(10) # 10 second timer to answer the question
 
     def DrawShowQuestion(self, screen):
         """Draw the board while in the SHOW_QUESTION phase."""
@@ -128,7 +208,6 @@ class BoardUI():
 
     def DrawShowAnswer(self, screen):
         """Draw the board while in the SHOW_ANSWER phase."""
-        self.parent.timerInit = False
         self.incorrect_button.Draw(screen, 30)
         self.correct_button.Draw(screen, 30)
         font = pygame.font.SysFont('Calibri', 34, True, False)
@@ -172,7 +251,14 @@ class BoardUI():
         self.cat5_button.Draw(screen, 25)
         self.cat6_button.Draw(screen, 25)
 
+    def startAnimation(self):
+        self.animate_top     = self.pos_y + self.QY_OFFSET + (self.ROW_HEIGHT * (self.parent.curr_question[1]))
+        self.animate_left    = self.pos_x + (self.COL_WIDTH * self.parent.curr_question[0])
+        self.animate_bottom  = self.animate_top + self.ROW_HEIGHT
+        self.animate_right   = self.animate_left + self.COL_WIDTH
+
     def ProcessUiEvent(self, event):
+        # Special event keys
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 self.app.restart()
@@ -203,10 +289,10 @@ class BoardUI():
                 if self.correct_button.isHighlighted(pygame.mouse.get_pos()):
                     self.app.questionResult(True, self.parent.qa.value, False, self.parent.questionsRemaining())
                     self.parent.question_phase = Phase.NORMAL
-                    self.correct_sound.play()
+                    #self.correct_sound.play()
 
                 if self.incorrect_button.isHighlighted(pygame.mouse.get_pos()):
-                    self.incorrect_sound.play()
+                    #self.incorrect_sound.play()
                     if self.app.curPlayerTokenCount() <= 0:
                         self.app.questionResult(False, self.parent.qa.value, False,  self.parent.questionsRemaining())
                         self.parent.question_phase = Phase.NORMAL
@@ -262,6 +348,9 @@ class Board():
         self.roundNum        = 0
         self.timer           = Timer()
         self.question_phase  = Phase.NORMAL
+        self.curr_question = [0,0]
+        self.animate_x       = 0
+        self.animate_y       = 0
 
     def startRound(self, roundNum, round_qset):
         self.qset     = round_qset
@@ -281,10 +370,10 @@ class Board():
             #Check to see if questions are left
             if category.q_count > 0:
                 q_pos    = 5-category.q_count
+                self.curr_question = [section, q_pos]
                 question = category.question[q_pos]
                 answer   = category.answer[q_pos]
                 value = (q_pos+1)*200*self.roundNum
-                self.qset.category[section].q_count -= 1
                 self.displayQuestion(question, answer, value)
             else:
                 # Shouldn't happen
@@ -300,9 +389,10 @@ class Board():
         self.question_phase = Phase.PLAYER_CHOICE
 
     def displayQuestion(self, q_text, q_answer, value):
-        self.timer.start(10) # 10 second time
         self.qa = QASet(q_text, q_answer, value)
-        self.question_phase = Phase.SHOW_QUESTION
+        self.question_phase = Phase.ANIMATION
+        self.timer.start(2.5) # Start 2.5 second animation timer
+        self.ui.startAnimation()
 
     def Draw(self, screen):
 
@@ -331,9 +421,21 @@ class Board():
         elif self.question_phase == Phase.PLAYER_CHOICE or self.question_phase == Phase.OPPONENT_CHOICE:
             player_choose = True if self.question_phase == Phase.PLAYER_CHOICE else False
             self.ui.DrawChooseCategory(screen, player_choose)
+        elif self.question_phase == Phase.ANIMATION:
+            self.ui.DrawNormal(screen) # Start with a normal screen, then add animations on top
+            self.processAnimation(screen)
         else:
             # Invalid question_phase
             pass
+
+    def processAnimation(self, screen):
+        time_left = self.timer.time_left()
+        if time_left <= 0:
+            self.question_phase = Phase.SHOW_QUESTION
+            self.qset.category[self.curr_question[0]].q_count -= 1
+            self.timer.start(10) # 10 second timer to answer the question
+        else:
+            self.ui.flashQuestion(screen)     
 
     def ProcessUiEvent(self, event):
         self.ui.ProcessUiEvent(event)
