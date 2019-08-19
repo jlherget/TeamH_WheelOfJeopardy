@@ -5,8 +5,6 @@ from tkinter.filedialog import askopenfilename
 root = Tk()
 root.title("Wheel of Jeopardy: Question/Answer Editor")
 root.resizable(width = False, height = False)
-root.config(bg='systemTransparent')
-
 
 
 final_list = [''] * 2 * 66
@@ -453,8 +451,8 @@ def load_last_used():
 # DEFAULT STATE OF THE EDITOR
 load_data("resources/default_do_not_delete_or_edit.txt")
 l.configure(bg='black', fg="white")
-round_label.configure(bg='systemTransparent', fg="white")
-round2_label.configure(bg='systemTransparent', fg="white")
+round_label.configure(bg='black', fg="white")
+round2_label.configure(bg='black', fg="white")
 usage_label.configure(bg='black', fg="white")
 save_label2.configure(bg='black', fg="white")
 
