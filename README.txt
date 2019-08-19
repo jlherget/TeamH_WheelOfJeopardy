@@ -1,3 +1,0 @@
-#Wheel of Jeopardy
-
-
