@@ -288,6 +288,7 @@ def categorize(args):
     t.tag_configure("right", justify='right')
     t.tag_add("right", "1.0", "end")
     t.configure(bg='black', fg="white")
+    t.config(insertbackground = "white")
 
     global t2
     t2 = Text(root)
@@ -295,6 +296,8 @@ def categorize(args):
     t2.tag_configure("right", justify='right')
     t2.tag_add("right", "1.0", "end")
     t2.configure(bg='black', fg="white")
+    t2.config(insertbackground = "white")
+
 
     save_label2.destroy() # Remove the label displayed if the user pressed saved prior to selecting a category
 
