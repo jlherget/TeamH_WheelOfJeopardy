@@ -408,7 +408,7 @@ def save_and_quit():
 
     new_file = open("resources/category_question_answer.txt", "w")
     try:
-        for k in flat_list[:-1]:
+        for k in flat_list[:]:
             new_file.write("%s\n" % k)
             
     except NameError:
