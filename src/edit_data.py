@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 
-
 # STEP 1: CREATE CANVAS FOR CATEGORY BUTTONS AND LABELS
 root = Tk()
 root.title("Wheel of Jeopardy: Question/Answer Editor")
 root.resizable(width = False, height = False)
+root.config(bg='systemTransparent')
+
 
 
 final_list = [''] * 2 * 66
@@ -19,19 +20,20 @@ center_y = (start_y + rec_width)/2
 
 
 canvas = Canvas(width= 6 * (rec_len - spacer) + 2 * start_x, height= 15 * (rec_width - spacer) + 2 * start_y)
-
+im2 = PhotoImage(file="resources/background.png")
+canvas.create_image(0,0, image = im2, anchor = "nw")
 canvas.pack()
 
 
 round_label = Label(root, text = 'Round 1', font = 'Helvetica 20 bold')
 round_label.place(x = rec_len/2 + start_x/2 + 5, y = spacer, anchor=CENTER)
-canvas.create_line(start_x, spacer, rec_len + start_x/2, spacer)
+canvas.create_line(start_x, spacer, rec_len + start_x/2, spacer, fill = "white")
 canvas.create_line(start_x/2, 6 * (rec_width - spacer) + 2 * start_y,
-                   6 * (rec_len - spacer) + 2 * start_x, 6 * (rec_width - spacer) + 2 * start_y, dash=(4, 2))
+                   6 * (rec_len - spacer) + 2 * start_x, 6 * (rec_width - spacer) + 2 * start_y, dash=(4, 2), fill = "white")
 
 round2_label = Label(root, text = 'Round 2', font = 'Helvetica 20 bold')
 round2_label.place(x = rec_len/2 + start_x/2 + 5, y = 6* rec_width - 1.5*spacer, anchor=CENTER)
-canvas.create_line(start_x, 6* rec_width - 1.5*spacer, rec_len + start_x/2, 6* rec_width - 1.5*spacer)
+canvas.create_line(start_x, 6* rec_width - 1.5*spacer, rec_len + start_x/2, 6* rec_width - 1.5*spacer, fill = "white")
 
 
 
@@ -181,44 +183,43 @@ cat6r2_lab = canvas.create_text(center_x,
                               font='Helvetica 14 bold', tags = "cat6b")
 
 
-# CREATE BUTTON TO UPDATE DATA ON SCREEN
-saveButton = Button(root, height = 1, width = 15, text = "Update Changes",  command = lambda:[retrieve_input(), show_save_label()])
-saveButton.place(x = rec_len + 3 * spacer, y = 14 * (rec_width - spacer) + start_y, anchor = CENTER)
-
-# CREATE BUTTON TO SAVE DATA AND EXIT
-saveAndChangeButton = Button(root, height = 1, width = 20, text = "Save Changes and Exit ",  command = lambda:[save_and_quit()])
-saveAndChangeButton.place(x = 2*rec_len + 5.25 * spacer, y = 14 * (rec_width - spacer) + start_y, anchor = CENTER)
-
-# CREATE BUTTON TO EXIT WITHOUT SAVING
-exitButton = Button(root, height = 1, width = 15, text = "Exit Without Saving",  command = lambda:exit_editor())
-exitButton.place(x = 3*rec_len + 6.7 * spacer, y = 14 * (rec_width - spacer) + start_y, anchor = CENTER)
-
-# CREATE BUTTON TO IMPORT FILE
-importButton = Button(root, height = 1, width = 15, text = "Import Existing File",
-                      command = lambda:select_file())
-importButton.place(relx = 0.115, y = 15 * (rec_width - spacer) + start_x + 10, anchor = CENTER)
-
-# CREATE BUTTON TO RESTORE DEFAULT STATE
-defaultButton = Button(root, height = 1, width = 15, text = "Restore Default",
-                      command = lambda:restore_default())
-defaultButton.place(relx = 0.115, y = 15 * (rec_width - spacer) + start_y + 10, anchor = CENTER)
-
-# CREATE BUTTON TO LOAD QUESTIONS LAST USED
-loadLastUsedButton = Button(root, height = 1, width = 25, text = "Restore Last Used Questions",
-                      command = lambda:load_last_used())
-loadLastUsedButton.place(relx = 0.8, y = 15 * (rec_width - spacer) + start_y + 10, anchor = CENTER)
-
-"resources/category_question_answer.txt"
 
 
+
+# CREATE BUTTONS
+importimg = PhotoImage(file="resources/button_import-existing-file.gif")
+restore_def_img = PhotoImage(file="resources/button_restore-default.gif")
+updateimg = PhotoImage(file="resources/button_update-changes.gif")
+saveimg = PhotoImage(file="resources/button_save-changes-and-exit.gif")
+exitimg = PhotoImage(file="resources/button_exit-without-saving.gif")
+restore_last_img = PhotoImage(file="resources/button_restore-last-used-questions.gif")
+
+
+importButton = Button(root, height = 30, width = 165, image = importimg, command = lambda:select_file())
+importButton.place(x = 100, y = 15 * (rec_width - spacer) + start_x + 10, anchor = CENTER)
+
+saveButton = Button(root, height = 30, width = 145, image = updateimg,  command = lambda:[retrieve_input(), show_save_label()])
+saveButton.place(x = 100, y = 15 * (rec_width - spacer) + start_x + 50, anchor = CENTER)
+
+saveAndChangeButton = Button(root, height = 30, width = 180, image = saveimg,  command = lambda:[save_and_quit()])
+saveAndChangeButton.place(x = 2*rec_len, y = 15 * (rec_width - spacer) + start_x + 10, anchor = CENTER)
+
+defaultButton = Button(root, height = 30, width = 140, image = restore_def_img, command = lambda:restore_default())
+defaultButton.place(x = 2*rec_len, y = 15 * (rec_width - spacer) + start_x + 50, anchor = CENTER)
+
+exitButton = Button(root, height = 30, width = 170, image = exitimg,  command = lambda:exit_editor())
+exitButton.place(x = 3*rec_len + 80, y = 15 * (rec_width - spacer) + start_x + 50, anchor = CENTER)
+
+loadLastUsedButton = Button(root, height = 30, width = 220, image = restore_last_img, command = lambda:load_last_used())
+loadLastUsedButton.place(x =  3*rec_len + 80, y = 15 * (rec_width - spacer) + start_x + 10, anchor = CENTER)
 
 # ADD LABEL FOR THE TITLES
 t = Text(root)
-t.configure(font = 'Helvetica 14')
+t.configure(font='Helvetica 14', background="gray")
 t.tag_configure("right", justify='right')
 t.tag_add("right", "1.0", "end")
 t2 = Text(root)
-t2.configure(font = 'Helvetica 14')
+t2.configure(font = 'Helvetica 14', background = "gray")
 t2.tag_configure("right", justify='right')
 t2.tag_add("right", "1.0", "end")
 l = Label(root, text = 'Select a Category to Edit', font = 'Helvetica 20 bold')
@@ -227,7 +228,7 @@ l.place(relx=0.5, y = spacer, anchor=CENTER)
 #l2.place(relx=0.5, y = 6* rec_width - 1.5*spacer,  anchor=CENTER)
 
 # CREATE LABEL FOR WHEN SAVE BUTTON IS PRESSED PRIOR TO SELECTING A CATEGORY
-save_label2 = Label(root, text='Please Select a Category to Edit.', font='Helvetica 14 bold')
+save_label2 = Label(root, text='Please Select a Category to Edit.', font='Helvetica 14 bold', foreground = "black")
 
 usage_label = Label(root, text='Each new category must start with "Category". '
                                '\nEach category, question and answer must be on their own separate lines.', font='Helvetica 12 bold')
@@ -266,27 +267,45 @@ def load_data(filename):
     global editable_full_list
     editable_full_list = full_list
 
-    canvas.tag_bind("cat1a", "<Button-1>", lambda x: categorize(0))
-    canvas.tag_bind("cat2a", "<Button-1>", lambda x: categorize(1))
-    canvas.tag_bind("cat3a", "<Button-1>", lambda x: categorize(2))
-    canvas.tag_bind("cat4a", "<Button-1>", lambda x: categorize(3))
-    canvas.tag_bind("cat5a", "<Button-1>", lambda x: categorize(4))
-    canvas.tag_bind("cat6a", "<Button-1>", lambda x: categorize(5))
-    canvas.tag_bind("cat1b", "<Button-1>", lambda x: categorize(6))
-    canvas.tag_bind("cat2b", "<Button-1>", lambda x: categorize(7))
-    canvas.tag_bind("cat3b", "<Button-1>", lambda x: categorize(8))
-    canvas.tag_bind("cat4b", "<Button-1>", lambda x: categorize(9))
-    canvas.tag_bind("cat5b", "<Button-1>", lambda x: categorize(10))
-    canvas.tag_bind("cat6b", "<Button-1>", lambda x: categorize(11))
+    canvas.tag_bind("cat1a", "<Button-1>", lambda x: [t2.destroy(), t.destroy(), categorize(0)])
+    canvas.tag_bind("cat2a", "<Button-1>", lambda x: [t2.destroy(), t.destroy(), categorize(1)])
+    canvas.tag_bind("cat3a", "<Button-1>", lambda x: [t2.destroy(), t.destroy(), categorize(2)])
+    canvas.tag_bind("cat4a", "<Button-1>", lambda x: [t2.destroy(), t.destroy(), categorize(3)])
+    canvas.tag_bind("cat5a", "<Button-1>", lambda x: [t2.destroy(), t.destroy(), categorize(4)])
+    canvas.tag_bind("cat6a", "<Button-1>", lambda x: [t2.destroy(), t.destroy(), categorize(5)])
+    canvas.tag_bind("cat1b", "<Button-1>", lambda x: [t.destroy(), t2.destroy(), categorize(6)])
+    canvas.tag_bind("cat2b", "<Button-1>", lambda x: [t.destroy(), t2.destroy(), categorize(7)])
+    canvas.tag_bind("cat3b", "<Button-1>", lambda x: [t.destroy(), t2.destroy(), categorize(8)])
+    canvas.tag_bind("cat4b", "<Button-1>", lambda x: [t.destroy(), t2.destroy(), categorize(9)])
+    canvas.tag_bind("cat5b", "<Button-1>", lambda x: [t.destroy(), t2.destroy(), categorize(10)])
+    canvas.tag_bind("cat6b", "<Button-1>", lambda x: [t.destroy(), t2.destroy(), categorize(11)])
 
 
 # FUNCTION 2: LOAD SPECIFIC DATA BASED ON THE SELECTED CATEGORY
 def categorize(args):
 
+    global t
+    t = Text(root)
+    t.configure(font='Helvetica 14', background="gray")
+    t.tag_configure("right", justify='right')
+    t.tag_add("right", "1.0", "end")
+    t.configure(bg='black', fg="white")
+
+    global t2
+    t2 = Text(root)
+    t2.configure(font='Helvetica 14', background="gray")
+    t2.tag_configure("right", justify='right')
+    t2.tag_add("right", "1.0", "end")
+    t2.configure(bg='black', fg="white")
+
     save_label2.destroy() # Remove the label displayed if the user pressed saved prior to selecting a category
 
     global save_label # Create a label once the user presses save to indicate the data has been saved
-    save_label = Label(root, text='Category ' + str(args + 1) + " Saved.", font='Helvetica 14 bold')
+    save_label = Label(root, text='R1: Category ' + str(args + 1) + " Saved.", font='Helvetica 14 bold')
+    if args + 1 > 6:
+        save_label = Label(root, text='R2: Category ' + str(args - 5) + " Saved.", font='Helvetica 14 bold')
+
+    save_label.configure(bg='red', fg="white")
 
     global cat  # Used to store the category number being edited
     cat = args + 1
@@ -299,21 +318,33 @@ def categorize(args):
     for x in editable_full_list[args]:
 
         if args in list(range(0,6)):
+
+            l.configure(font = 'Helvetica 20 bold')
             l.configure(text="Editing R1 Category " + " " + str(cat))
             l.place(relx=0.6, y=spacer, anchor=CENTER)
             t.insert(END, str(x) + '\n')
+            t.update()
             t.place(x = start_x + rec_len,
                     y = start_y,
                     height = 6 * (rec_width - spacer) - start_y + spacer ,
                     width = 5 * (rec_len - spacer) - spacer)
+
         else:
-            t2.insert(END, str(x) + '\n')
+            l.configure(font = 'Helvetica 20 bold')
             l.configure(text="Editing R2 Category " + " " + str(cat - 6))
             l.place(relx=0.6, y=6* rec_width - 1.5*spacer, anchor=CENTER)
+            t2.insert(END, str(x) + '\n')
+            t2.update()
             t2.place(x=start_x + rec_len,
                      y=start_y + 8 * rec_width - 8 * spacer + 5,
                      height=6 * (rec_width - spacer) - start_y + spacer,
                      width=5 * (rec_len - spacer) - spacer)
+
+def clear_text_box():
+    if t.compare("end-1c", "!=", "1.0"):
+        t.delete('1.0', END)
+    if t2.compare("end-1c", "!=", "1.0"):
+        t2.delete('1.0', END)
 
 
 # FUNCTION 3: WRITE DATA TO A LIST OF LISTS FOR A SPECIFIC CATEGORY
@@ -359,9 +390,9 @@ def retrieve_input():
 def show_save_label():
 
     try:
-        save_label.place(relx = 0.45, y=15 * (rec_width - spacer) + start_y + 10, anchor=CENTER)
+        save_label.place(relx = 0.12, rely = 0.45, anchor=CENTER)
     except NameError:
-        save_label2.place(relx = 0.45, y = 15 * (rec_width - spacer) + start_y + 10, anchor=CENTER)
+        save_label2.place(relx = 0.5, rely = 0.5, anchor=CENTER)
 
 
 # FUNCTION 5: SAVE OUTPUT OF CHANGES TO FILE
@@ -416,12 +447,16 @@ def restore_default():
 
 def load_last_used():
     load_data("resources/category_question_answer.txt")
-    l.configure(text="Questions from the last game have been loaded." + "\n" + "Select a Category Again to Edit.")
+    l.configure(text="Questions from the last game have been loaded." + "\n" + "Select a Category Again to Edit.", font = 'Helvetica 14 bold' )
     l.place(relx=0.6, y=spacer, anchor=CENTER)
 
 # DEFAULT STATE OF THE EDITOR
 load_data("resources/default_do_not_delete_or_edit.txt")
-
+l.configure(bg='black', fg="white")
+round_label.configure(bg='systemTransparent', fg="white")
+round2_label.configure(bg='systemTransparent', fg="white")
+usage_label.configure(bg='black', fg="white")
+save_label2.configure(bg='black', fg="white")
 
 
 root.mainloop()
