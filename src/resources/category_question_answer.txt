@@ -1,132 +1,132 @@
-Category: The Beach
-Beach Question 1
-Beach Answer 1
-Beach Question 2
-Beach Answer 2
-Beach Question 3
-Beach Answer 3
-Beach Question 4
-Beach Answer 4
-Beach Question 5
-Beach Answer 5
-Category: Airplanes
-Airplanes Question 1
-Airplanes Answer 1
-Airplanes Question 2
-Airplanes Answer 2
-Airplanes Question 3
-Airplanes Answer 3
-Airplanes Question 4
-Airplanes Answer 4
-Airplanes Question 5
-Airplanes Answer 5
+Category: History
+Who was the first president of the United States?
+George Washington
+What was the largest empire ever to exist?
+British Empire
+In which war was the atomic bomb used for the first time?
+World War 2
+Who led the Soviet Union from the late 1800s to mid 1900s?
+Joseph Stalin
+Which US president served over two terms?
+Franklin Delano Roosevelt
+Category: Technology
+What company did Bill Gates found?
+Microsoft
+Which phone is currently the most popular in the market?
+iPhone
+Which company developed the first Operating System?
+IBM
+What is the name of the principle that computer capability doubles every two years?
+Moore's Law
+What is the name of the semiconductor device used in most circuits today?
+Transistor
 Category: Trains
-Trains Question 1
-Trains Answer 1
-Trains Question 2
-Trains Answer 2
-Trains Question 3
-Trains Answer 3
-Trains Question 4
-Trains Answer 4
-Trains Question 5
-Trains Answer 5
+What is the name of the New York City subway system?
+MTA
+What was the fuel source for the earliest modern trains?
+Steam
+What is the name of the vehicle that provide motive power to a train?
+Locomotive
+By what mechanism are rail cars connected?
+Coupling
+What is the largest train station in the world?
+Grand Central Terminal
 Category: TV Shows
-TV Shows Question 1
-TV Shows Answer 1
-TV Shows Question 2
-TV Shows Answer 2
+What TV genre films real people designed to entertain the audience?
+Reality
+Which TV show as adapted from A Song of Ice and Fire by George R.R Martin?
+Game of Thrones
 TV Shows Question 3
 TV Shows Answer 3
-TV Shows Question 4
-TV Shows Answer 4
-TV Shows Question 5
-TV Shows Answer 5
+What is the name of the Japanese based genre where characters are drawn?
+Anime
+Which TV show finale has the most viewership in history?
+M*A*S*H
 Category: Movies
-Movies Question 1
-Movies Answer 1
-Movies Question 2
-Movies Answer 2
-Movies Question 3
-Movies Answer 3
-Movies Question 4
-Movies Answer 4
-Movies Question 5
-Movies Answer 5
-Category: Films
-Films Question 1
-Films Answer 1
-Films Question 2
-Films Answer 2
-Films Question 3
-Films Answer 3
-Films Question 4
-Films Answer 4
-Films Question 5
-Films Answer 5
-Category: The Streets
-Streets Question 1
-Streets Answer 1
-Streets Question 2
-Streets Answer 2
-Streets Question 3
-Streets Answer 3
-Streets Question 4
-Streets Answer 4
-Streets Question 5
-Streets Answer 5
+Which popular review aggregator rates movies based on a percentage?
+Rotten Tomatoes
+What is the highest grossing film of all time?
+Avengers: Endgame
+What is the name of the Indian Cinema industry?
+Bollywood
+What is the most popular movie/tv show streaming service?
+Netflix
+What is the largest theatre chain in the world?
+AMC
+Category: Poker
+What is the name of strongest suit in a deck of cards?
+Spades
+What are 5 sequential cards with the same suit called?
+Straight
+What is the name of the most powerful hand a player can possess?
+Royal Flush
+What is the name of the variation of Poker where 2 of spades is the strongest card?
+Chinese Poker
+What is the value of a hand that has no combinations?
+The value of the highest card
+Category: Streets
+What is the basic structure connects two points?
+Road
+What type public way runs north to south and has buildings on both sides?
+Street
+What public way runs perpendicular to streets?
+Avenue
+A very wide city street with structures on both sides and has a median in the middle.
+Boulevard
+A circular road that ends in a loop.
+Court
 Category: Cars
-Cars Question 1
-Cars Answer 1
-Cars Question 2
-Cars Answer 2
-Cars Question 3
-Cars Answer 3
-Cars Question 4
-Cars Answer 4
-Cars Question 5
-Cars Answer 5
+Which company created the first mass produced automobile?
+Ford Motor Company
+What company that uses the naming scheme: 'Model' for their vehicles?
+Tesla
+What is the biggest car brand in the world?
+Toyota
+What chemical is added to gasoline as a denaturant?
+Ethanol
+Who created a steam powered vehicle for a Chinese Emperor in the 17th century?
+Ferdinand Verbiest
 Category: Computers
-Computers Question 1
-Computers Answer 1
-Computers Question 2
-Computers Answer 2
-Computers Question 3
-Computers Answer 3
-Computers Question 4
-Computers Answer 4
-Computers Question 5
-Computers Answer 5
+What was the name of the first Microsoft operating system?
+Windows
+Which company creates computers that are based on UNIX systems?
+Apple
+What type of malware can replicated itself without human interaction?
+Worm
+What file extension is seen on image data files (generally a disc)?
+.iso
+What is a networked app that allows the user to interact with a non-local environment?
+Virtual Environment
 Category: Brands
-Brands Question 1
-Brands Answer 1
-Brands Question 2
-Brands Answer 2
-Brands Question 3
-Brands Answer 3
-Brands Question 4
-Brands Answer 4
-Brands Question 5
-Brands Answer 5
+What is the most popular brand in the world?
+Apple
+Which athlete was Nike's first signature shoe designed for?
+Michael Jordan
+Which company currently designs jerseys for the NBA?
+Nike
+What is the most popular French luxury retail company?
+Louis Vuitton
+A brand becomes so popular, the brand name becomes the common name is known as:
+Generic Trademark
 Category: Sports
-Sports Question 1
-Sports Answer 1
-Sports Question 2
-Sports Answer 2
-Sports Question 3
-Sports Answer 3
-Sports Question 4
-Sports Answer 4
-Sports Question 5
-Sports Answer 5
+In basketball, how many points is a layup worth?
+2 points
+In american football, when a player loses possession of the ball due to contact it is a:
+Fumble
+What is it called when a single player makes three successive goals?
+Hat Trick
+In what sport is the term 'set' commonly used?
+Volleyball
+In basketball, when a player interrupts a shot as the ball is coming down it is known as:
+Goaltending
 Category: People
-People Question 1
-People Answer 1
-People Question 2
-People Answer 2
-People Question 3
-People Answer 3
-People Question 4
-People Answer 4
-People Question 5
-People Answer 5
+Who is the richest man in the world?
+Jeff Bezos
+Which actor starred in a movie, where they infiltrated people's dreams?
+Leonardo DiCaprio
+Which family of sisters star TV show focusing on their personal and professional lives?
+Kardashians
+Who was the first US president to be impeached?
+Richard Nixon
+Who developed the atomic bomb?
+Albert Einstein
